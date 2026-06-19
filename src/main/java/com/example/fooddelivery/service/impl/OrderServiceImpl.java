@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
         cartMapper.deleteByUserId(userId);
 
         // 8. 返回订单详情
-        return buildOrderDTO(order, address, null);
+        return buildOrderDTO(order, address, orderItems);
     }
 
     @Override

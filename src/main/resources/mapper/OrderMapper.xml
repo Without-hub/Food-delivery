@@ -48,12 +48,14 @@
 
     <update id="updateStatus">
         UPDATE `order`
-        SET status = #{status},
+        <set>
+            status = #{status},
             update_time = NOW(),
             <if test="status == 1">pay_time = NOW(),</if>
             <if test="status == 2">delivery_time = NOW(),</if>
             <if test="status == 3">complete_time = NOW(),</if>
             <if test="status == 4">cancel_time = NOW(),</if>
+        </set>
         WHERE id = #{id}
     </update>
 

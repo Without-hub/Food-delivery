@@ -1,7 +1,10 @@
 package com.example.fooddelivery.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.math.BigDecimal;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderItemDTO {
     private Long dishId;
     private String dishName;
