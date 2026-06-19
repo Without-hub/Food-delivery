@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fooddelivery.mapper.CartMapper">
+
+    <resultMap id="cartMap" type="com.example.fooddelivery.entity.Cart">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="dish_id" property="dishId"/>
+        <result column="shop_id" property="shopId"/>
+        <result column="quantity" property="quantity"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectByUserId" resultMap="cartMap">
+        SELECT * FROM cart WHERE user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserId">
+        DELETE FROM cart WHERE user_id = #{userId}
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cart (user_id, dish_id, shop_id, quantity, create_time)
+        VALUES (#{userId}, #{dishId}, #{shopId}, #{quantity}, NOW())
+    </insert>
+
+    <update id="updateQuantity">
+        UPDATE cart SET quantity = #{quantity} WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM cart WHERE id = #{id}
+    </delete>
+
+    <select id="selectByUserAndDish" resultMap="cartMap">
+        SELECT * FROM cart WHERE user_id = #{userId} AND dish_id = #{dishId}
+    </select>
+</mapper>

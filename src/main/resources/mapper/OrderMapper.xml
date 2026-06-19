@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fooddelivery.mapper.OrderMapper">
+
+    <resultMap id="orderMap" type="com.example.fooddelivery.entity.Order">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="user_id" property="userId"/>
+        <result column="shop_id" property="shopId"/>
+        <result column="address_id" property="addressId"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="delivery_fee" property="deliveryFee"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="complete_time" property="completeTime"/>
+        <result column="cancel_time" property="cancelTime"/>
+        <result column="cancel_reason" property="cancelReason"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.fooddelivery.entity.Order"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `order` (order_no, user_id, shop_id, address_id,
+                             total_price, delivery_fee, status, remark, create_time)
+        VALUES (#{orderNo}, #{userId}, #{shopId}, #{addressId},
+                #{totalPrice}, #{deliveryFee}, #{status}, #{remark}, NOW())
+    </insert>
+
+    <select id="selectById" resultMap="orderMap">
+        SELECT * FROM `order` WHERE id = #{id}
+    </select>
+
+    <select id="selectByOrderNo" resultMap="orderMap">
+        SELECT * FROM `order` WHERE order_no = #{orderNo}
+    </select>
+
+    <select id="selectByUserId" resultMap="orderMap">
+        SELECT * FROM `order`
+        WHERE user_id = #{userId}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <update id="updateStatus">
+        UPDATE `order`
+        SET status = #{status},
+            update_time = NOW(),
+            <if test="status == 1">pay_time = NOW(),</if>
+            <if test="status == 2">delivery_time = NOW(),</if>
+            <if test="status == 3">complete_time = NOW(),</if>
+            <if test="status == 4">cancel_time = NOW(),</if>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePayTime">
+        UPDATE `order` SET pay_time = NOW(), status = 1 WHERE id = #{id}
+    </update>
+</mapper>
