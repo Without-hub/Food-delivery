@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fooddelivery.mapper.UserMapper">
+    <select id="selectByUsername" resultType="com.example.fooddelivery.entity.User">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user(username,password,phone,nickname,create_time,update_time)
+        VALUES(#{username},#{password},#{phone},#{nickname},NOW(),NOW())
+    </insert>
+
+    <select id="selectById" resultType="com.example.fooddelivery.entity.User">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <update id="updateById">
+        UPDATE user
+        <set>
+            <if test="user.nickname != null">nickname = #{user.nickname},</if>
+            <if test="user.phone != null">phone = #{user.phone},</if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{user.id}
+    </update>
+</mapper>

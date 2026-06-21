@@ -22,4 +22,5 @@ public interface AddressMapper {
     int clearDefault(@Param("userId") Long userId);
 
     int setDefault(@Param("id") Long id);
+
 }
