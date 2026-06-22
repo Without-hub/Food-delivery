@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        header {
+            height: 60px;
+            background: #fff;
+            box-shadow: 0 1px 4px #eee;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+        }
+        .wrap {
+            width: 1200px;
+            margin: 30px auto;
+        }
+        .order-item {
+            border: 1px solid #eee;
+            margin-bottom: 16px;
+            padding: 16px;
+        }
+        .order-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .status-tag {
+            color: #ff4400;
+        }
+    </style>
+</head>
+<body>
+<div class="msg-tip"></div>
+<header>
+    <a href="./index.html">← 返回首页</a>
+    <h3>我的全部订单</h3>
+</header>
+<div class="wrap" id="orderBox"></div>
+
+<script src="../js/common.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/order-list.js"></script>
+</body>
