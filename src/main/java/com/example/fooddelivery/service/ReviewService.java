@@ -8,4 +8,5 @@ public interface ReviewService {
     void deleteReview(Long reviewId, Long userId);
     List<Review> getReviewByDishId(Long dishId);
     List<Review> getReviewByUserId(Long userId);
+    Double getAvgRatingByDishId(Long dishId);
 }

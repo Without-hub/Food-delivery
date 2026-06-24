@@ -11,4 +11,7 @@ public interface ReviewMapper {
     void deleteById(Long id);
     List<Review> selectByDishId(Long dishId);
     List<Review> selectByUserId(Long userId);
+    Review selectByUserAndOrder(@org.apache.ibatis.annotations.Param("userId") Long userId,
+                                @org.apache.ibatis.annotations.Param("orderId") Long orderId);
+    Double selectAvgRatingByDishId(@org.apache.ibatis.annotations.Param("dishId") Long dishId);
 }

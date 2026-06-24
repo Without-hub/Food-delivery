@@ -18,4 +18,10 @@
     <select id="selectByUserId" resultType="com.example.fooddelivery.entity.Review">
         SELECT * FROM review WHERE user_id=#{userId}
     </select>
+    <select id="selectByUserAndOrder" resultType="com.example.fooddelivery.entity.Review">
+        SELECT * FROM review WHERE user_id=#{userId} AND order_id=#{orderId}
+    </select>
+    <select id="selectAvgRatingByDishId" resultType="java.lang.Double">
+        SELECT IFNULL(AVG(rating), 0) FROM review WHERE dish_id=#{dishId}
+    </select>
 </mapper>
