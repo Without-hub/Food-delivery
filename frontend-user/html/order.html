@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>确认订单</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        header {
+            height: 60px;
+            background: #fff;
+            box-shadow: 0 1px 4px #eee;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+        }
+        .wrap {
+            width: 1200px;
+            margin: 30px auto;
+        }
+        .addr-card {
+            padding: 16px;
+            border: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        .goods-list {
+            margin: 20px 0;
+        }
+        .goods-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .submit-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #fff;
+            box-shadow: 0 -1px 6px #eee;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 40px;
+        }
+        .total-text {
+            font-size: 18px;
+            color: #f40;
+            margin-right: 20px;
+        }
+        .submit-order-btn {
+            width: 120px;
+            height: 40px;
+            background: #ff4400;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="msg-tip"></div>
+<header>
+    <a href="./cart.html">← 返回购物车</a>
+    <h3>确认订单</h3>
+</header>
+<div class="wrap">
+    <div class="addr-card" id="addrBox">加载收货地址...</div>
+    <div class="goods-list" id="goodsBox"></div>
+</div>
+<div class="submit-bar">
+    <div>实付：<span class="total-text" id="payTotal">¥0.00</span></div>
+    <button class="submit-order-btn" id="submitBtn">提交订单</button>
+</div>
+
+<script src="../js/common.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/order.js"></script>
+</body>
