@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(dto.getUsername());
         user.setPassword(dto.getPassword());
         user.setPhone(dto.getPhone());
-        user.setUsername(dto.getNickname());
+        user.setEmail(dto.getNickname());
         userMapper.insert(user);
         return "注册成功";
     }
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long userId, UserRegisterDTO dto) {
         User user = new User();
         user.setId(userId);
-        user.setUsername(dto.getNickname());
+        user.setEmail(dto.getNickname());
         user.setPhone(dto.getPhone());
         userMapper.updateById(user);
     }

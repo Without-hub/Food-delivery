@@ -34,7 +34,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void updateAddress(AddressDTO dto, Long userId) {
-        Address addr = (Address) addressMapper.selectByUserId(dto.getId());
+        Address addr = addressMapper.selectById(dto.getId());
         if (addr == null) {
             throw new RuntimeException("地址不存在");
         }
@@ -49,7 +49,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void deleteAddr(Long id, Long userId) {
-        Address addr = (Address) addressMapper.selectByUserId(id);
+        Address addr = addressMapper.selectById(id);
         if (addr == null) {
             throw new RuntimeException("地址不存在");
         }
