@@ -58,11 +58,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void setDefault(Long id, Long userId) {
-        // 先把该用户所有地址取消默认
         addressMapper.clearDefault(userId);
-        Address addr = new Address();
-        addr.setId(id);
-        addr.setIsDefault(1);
-        addressMapper.update(addr);
+        addressMapper.setDefault(id);
     }
 }

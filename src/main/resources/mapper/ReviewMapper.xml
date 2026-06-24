@@ -3,8 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.fooddelivery.mapper.ReviewMapper">
     <insert id="insert">
-        INSERT INTO review(user_id,order_id,dish_id,rating,content,create_time)
-        VALUES(#{userId},#{orderId},#{dishId},#{rating},#{content},#{createTime})
+        INSERT INTO review(user_id,order_id,dish_id,rating,content)
+        VALUES(#{userId},#{orderId},#{dishId},#{rating},#{content})
     </insert>
     <select id="selectById" resultType="com.example.fooddelivery.entity.Review">
         SELECT * FROM review WHERE id=#{id}
