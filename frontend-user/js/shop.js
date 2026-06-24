@@ -31,7 +31,7 @@ async function renderFood() {
             const price = itemDom.dataset.price;
             const res = await Api.addCart({ foodId, shopId: sid, num: 1, price });
             if (res.code === 200) Common.showMsg("加入购物车成功");
-            else Common.showMsg(res.msg);
+            else Common.showMsg(res.message);
         }
     }
 }

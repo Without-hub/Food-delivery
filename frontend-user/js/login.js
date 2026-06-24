@@ -16,7 +16,7 @@ loginBtn.onclick = async function () {
             // 跳首页
             setTimeout(() => location.href = "./index.html", 1200);
         } else {
-            Common.showMsg(res.msg || "登录失败");
+            Common.showMsg(res.message || "登录失败");
         }
     } catch (err) {
         Common.showMsg("网络请求失败");

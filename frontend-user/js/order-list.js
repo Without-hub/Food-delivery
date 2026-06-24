@@ -15,7 +15,7 @@ async function renderOrder() {
             <div class="order-item">
                 <div class="order-top">
                     <span>订单号：${item.orderNo}</span>
-                    <span class="status-tag">${item.statusName}</span>
+                    <span class="status-tag">${item.statusText}</span>
                 </div>
                 <div>订单总价：¥${item.totalPrice}</div>
                 <div style="margin-top:8px;color:#999">下单时间：${item.createTime}</div>

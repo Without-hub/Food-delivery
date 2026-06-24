@@ -87,10 +87,10 @@ const Api = {
     // ========== 订单模块（对接魏子皓组长） ==========
     // 提交下单
     createOrder(data) {
-        return request({ url: "/order/create", method: "POST", data })
+        return request({ url: "/api/orders", method: "POST", data })
     },
     // 获取订单列表
     getOrderList(status = 0) {
-        return request({ url: `/order/list?status=${status}` })
+        return request({ url: `/api/orders?status=${status}` })
     }
 }

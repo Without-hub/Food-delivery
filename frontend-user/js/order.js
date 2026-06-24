@@ -57,7 +57,7 @@ document.getElementById("submitBtn").onclick = async function () {
         Common.showMsg("下单成功");
         setTimeout(() => location.href = "./order-list.html", 1200);
     } else {
-        Common.showMsg(res.msg);
+        Common.showMsg(res.message);
     }
 }
 

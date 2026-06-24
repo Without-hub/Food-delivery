@@ -14,7 +14,7 @@ regBtn.onclick = async function () {
             Common.showMsg("注册成功，请登录");
             setTimeout(() => location.href = "./login.html", 1200);
         } else {
-            Common.showMsg(res.msg);
+            Common.showMsg(res.message);
         }
     } catch {
         Common.showMsg("注册请求失败");
