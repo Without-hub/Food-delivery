@@ -46,4 +46,21 @@
         WHERE name LIKE CONCAT('%', #{keyword}, '%') AND status = 1
         ORDER BY sales_volume DESC
     </select>
+
+    <select id="selectDishPage" resultMap="dishMap">
+        SELECT * FROM dish
+        WHERE shop_id = #{shopId} AND status = 1
+        <if test="keyword != null and keyword != ''">
+            AND name LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        ORDER BY sales_volume DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectCategoryByShopId" resultType="com.example.fooddelivery.entity.Category">
+        SELECT id, name, shop_id, sort_order, create_time
+        FROM category
+        WHERE shop_id = #{shopId}
+        ORDER BY sort_order ASC
+    </select>
 </mapper>

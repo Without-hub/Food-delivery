@@ -1,5 +1,6 @@
 package com.example.fooddelivery.mapper;
 
+import com.example.fooddelivery.entity.Category;
 import com.example.fooddelivery.entity.Dish;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,11 @@ public interface DishMapper {
                                   @Param("limit") int limit);
 
     List<Dish> searchByName(@Param("keyword") String keyword);
+
+    List<Dish> selectDishPage(@Param("shopId") Long shopId,
+                              @Param("keyword") String keyword,
+                              @Param("offset") Integer offset,
+                              @Param("pageSize") Integer pageSize);
+
+    List<Category> selectCategoryByShopId(@Param("shopId") Long shopId);
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.fooddelivery.mapper.ShopMapper">
+    <resultMap id="shopMap" type="com.example.fooddelivery.entity.Shop">
+        <id column="id" property="id"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="image" property="image"/>
+        <result column="address" property="address"/>
+        <result column="phone" property="phone"/>
+        <result column="open_time" property="openTime"/>
+        <result column="avg_score" property="avgScore"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 分页查询全部营业商家 -->
+    <select id="selectShopPage" resultMap="shopMap">
+        SELECT * FROM shop WHERE status = 1
+            LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 任务要求【关键SQL】按菜品分类筛选商家 -->
+    <select id="selectShopByCategory" resultMap="shopMap">
+        SELECT DISTINCT s.*
+        FROM shop s
+                 LEFT JOIN category c ON s.id = c.shop_id
+        WHERE s.status = 1 AND c.id = #{categoryId}
+            LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!-- 根据店铺id查询商家详情 -->
+    <select id="selectShopById" resultMap="shopMap">
+        SELECT * FROM shop WHERE id = #{shopId}
+    </select>
+</mapper>
