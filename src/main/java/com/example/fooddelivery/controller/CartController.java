@@ -1,7 +1,7 @@
 package com.example.fooddelivery.controller;
 
+import com.example.fooddelivery.dto.CartDTO;
 import com.example.fooddelivery.dto.Result;
-import com.example.fooddelivery.entity.Cart;
 import com.example.fooddelivery.service.CartService;
 import org.springframework.web.bind.annotation.*;
 import jakarta.annotation.Resource;
@@ -47,7 +47,7 @@ public class CartController {
     }
 
     @GetMapping("/list")
-    public Result<List<Cart>> list(@RequestParam Long userId) {
-        return Result.ok(cartService.getUserCart(userId));
+    public Result<List<CartDTO>> list(@RequestParam Long userId) {
+        return Result.ok(cartService.getUserCartWithDish(userId));
     }
 }

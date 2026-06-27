@@ -30,6 +30,7 @@ public class OrderDTO {
     private LocalDateTime deliveryTime;
     private LocalDateTime completeTime;
     private List<OrderItemDTO> items;
+    private Boolean hasReview;
 
     // ==== Getters and Setters ====
     public Long getAddressId() { return addressId; }
@@ -70,6 +71,8 @@ public class OrderDTO {
     public void setCompleteTime(LocalDateTime completeTime) { this.completeTime = completeTime; }
     public List<OrderItemDTO> getItems() { return items; }
     public void setItems(List<OrderItemDTO> items) { this.items = items; }
+    public Boolean getHasReview() { return hasReview != null && hasReview; }
+    public void setHasReview(Boolean hasReview) { this.hasReview = hasReview; }
 
     public static String statusText(Integer status) {
         return switch (status) {

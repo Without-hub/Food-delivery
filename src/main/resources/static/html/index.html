@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>外卖首页</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        header {
+            height: 60px;
+            background: #fff;
+            box-shadow: 0 1px 4px #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+        .nav a {
+            margin-left: 24px;
+        }
+        .shop-wrap {
+            width: 1200px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .shop-item {
+            cursor: pointer;
+        }
+        .shop-item img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+        .shop-name {
+            font-weight: bold;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="msg-tip"></div>
+<header>
+    <h3>外卖点餐平台</h3>
+    <div class="nav">
+        <a href="./index.html">首页</a>
+        <a href="./cart.html">购物车</a>
+        <a href="./order-list.html">我的订单</a>
+    </div>
+</header>
+<div class="shop-wrap" id="shopBox"></div>
+
+<script src="../js/common.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/index.js"></script>
+</body>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        header { height: 60px; background: #fff; box-shadow: 0 1px 4px #eee; display: flex; align-items: center; padding: 0 40px; }
+        .wrap { width: 1200px; margin: 30px auto; }
+        .filter-bar { margin-bottom: 20px; display: flex; gap: 10px; }
+        .filter-bar button { padding: 6px 16px; border: 1px solid #ddd; background: #fff; border-radius: 4px; cursor: pointer; }
+        .filter-bar button.active { background: #ff4400; color: #fff; border-color: #ff4400; }
+        .order-item { border: 1px solid #eee; margin-bottom: 16px; padding: 16px; border-radius: 8px; }
+        .order-top { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .status-tag { color: #ff4400; font-weight: bold; }
+        .order-actions { margin-top: 10px; display: flex; gap: 8px; }
+        .order-actions button { padding: 4px 14px; border: 1px solid #ddd; background: #fff; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .order-actions button.review-btn { background: #ff4400; color: #fff; border-color: #ff4400; }
+        .review-pop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 999; justify-content: center; align-items: center; }
+        .review-box { background: #fff; padding: 30px; border-radius: 10px; width: 420px; }
+        .review-box h3 { margin-bottom: 16px; }
+        .review-box textarea { width: 100%; height: 80px; border: 1px solid #ddd; border-radius: 6px; padding: 8px; margin: 10px 0; }
+        .stars { display: flex; gap: 6px; margin: 10px 0; }
+        .stars span { font-size: 28px; cursor: pointer; color: #ddd; }
+        .stars span.on { color: #ff4400; }
+    </style>
+</head>
+<body>
+<div class="msg-tip"></div>
+<header>
+    <a href="./index.html">← 返回首页</a>
+    <h3>我的订单</h3>
+</header>
+<div class="wrap">
+    <div class="filter-bar">
+        <button class="active" data-status="">全部</button>
+        <button data-status="0">待支付</button>
+        <button data-status="1">已支付</button>
+        <button data-status="2">配送中</button>
+        <button data-status="3">已完成</button>
+        <button data-status="4">已取消</button>
+    </div>
+    <div id="orderBox"></div>
+</div>
+
+<!-- 评价弹窗 -->
+<div class="review-pop" id="reviewPop">
+    <div class="review-box">
+        <h3>评价菜品</h3>
+        <div>评分：<span class="stars" id="starBox"></span></div>
+        <textarea id="reviewContent" placeholder="说点什么吧..."></textarea>
+        <div style="display:flex;gap:10px;margin-top:12px;">
+            <button class="btn" id="submitReview" style="flex:1">提交评价</button>
+            <button id="closeReview" style="flex:1;background:#eee;color:#333;height:44px;border:none;border-radius:6px;cursor:pointer;">取消</button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/common.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/order-list.js"></script>
+</body></html>

@@ -15,6 +15,16 @@
         SELECT * FROM cart WHERE user_id = #{userId}
     </select>
 
+    <select id="selectDTOByUserId" resultType="com.example.fooddelivery.dto.CartDTO">
+        SELECT c.id, c.user_id, c.dish_id, c.shop_id,
+               d.name AS dish_name, d.image AS dish_image, d.price,
+               c.quantity,
+               (d.price * c.quantity) AS subtotal
+        FROM cart c
+        JOIN dish d ON c.dish_id = d.id
+        WHERE c.user_id = #{userId}
+    </select>
+
     <delete id="deleteByUserId">
         DELETE FROM cart WHERE user_id = #{userId}
     </delete>

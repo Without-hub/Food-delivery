@@ -25,14 +25,17 @@ public class OrderServiceImpl implements OrderService {
     private final CartMapper cartMapper;
     private final DishMapper dishMapper;
     private final AddressMapper addressMapper;
+    private final ReviewMapper reviewMapper;
 
     public OrderServiceImpl(OrderMapper orderMapper, OrderItemMapper orderItemMapper,
-                            CartMapper cartMapper, DishMapper dishMapper, AddressMapper addressMapper) {
+                            CartMapper cartMapper, DishMapper dishMapper, AddressMapper addressMapper,
+                            ReviewMapper reviewMapper) {
         this.orderMapper = orderMapper;
         this.orderItemMapper = orderItemMapper;
         this.cartMapper = cartMapper;
         this.dishMapper = dishMapper;
         this.addressMapper = addressMapper;
+        this.reviewMapper = reviewMapper;
     }
 
     @Override
@@ -111,7 +114,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> listOrders(Long userId, Integer status) {
         List<Order> orders = orderMapper.selectByUserId(userId, status);
-        return orders.stream().map(o -> buildOrderDTO(o, null, null)).collect(Collectors.toList());
+        List<Long> allOrderIds = orders.stream().map(Order::getId).collect(Collectors.toList());
+        List<Long> reviewedIds = allOrderIds.isEmpty() ? List.of() :
+                reviewMapper.selectReviewedOrderIds(userId, allOrderIds);
+        java.util.Set<Long> reviewedSet = new java.util.HashSet<>(reviewedIds);
+        return orders.stream().map(o -> {
+            OrderDTO dto = buildOrderDTO(o, null, null);
+            dto.setHasReview(reviewedSet.contains(o.getId()));
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Override

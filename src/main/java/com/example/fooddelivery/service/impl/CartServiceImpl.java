@@ -1,5 +1,6 @@
 package com.example.fooddelivery.service.impl;
 
+import com.example.fooddelivery.dto.CartDTO;
 import com.example.fooddelivery.entity.Cart;
 import com.example.fooddelivery.mapper.CartMapper;
 import com.example.fooddelivery.service.CartService;
@@ -51,5 +52,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<Cart> getUserCart(Long userId) {
         return cartMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public List<CartDTO> getUserCartWithDish(Long userId) {
+        return cartMapper.selectDTOByUserId(userId);
     }
 }

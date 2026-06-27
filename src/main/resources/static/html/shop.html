@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>店铺详情</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        header { height: 60px; background: #fff; box-shadow: 0 1px 4px #eee; display: flex; align-items: center; padding: 0 40px; }
+        header a { margin-right: 30px; }
+        .wrap { width: 1200px; margin: 0 auto; }
+        .shop-banner { background: linear-gradient(135deg, #ff4400, #ff6b35); color: #fff; padding: 24px 30px; margin: 20px 0; border-radius: 10px; }
+        .shop-banner h2 { font-size: 24px; margin-bottom: 10px; }
+        .shop-banner .info { font-size: 14px; opacity: 0.9; line-height: 1.8; }
+        .cat-tabs { display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
+        .cat-tab { padding: 6px 18px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 14px; }
+        .cat-tab.active { background: #ff4400; color: #fff; border-color: #ff4400; }
+        .dish-list { margin: 20px 0; }
+        .cat-title { font-size: 18px; font-weight: bold; margin: 20px 0 10px; padding-left: 8px; border-left: 4px solid #ff4400; }
+        .food-item { display: flex; padding: 14px 0; border-bottom: 1px solid #eee; align-items: center; }
+        .food-item img { width: 80px; height: 80px; margin-right: 16px; border-radius: 6px; background: #f5f5f5; }
+        .food-info { flex: 1; }
+        .food-info .name { font-weight: bold; font-size: 15px; }
+        .food-info .desc { color: #999; font-size: 12px; margin: 4px 0; }
+        .food-info .price { color: #f40; font-size: 16px; font-weight: bold; }
+        .food-info .origin { color: #999; text-decoration: line-through; font-size: 12px; margin-left: 8px; }
+        .add-cart-btn { width: 80px; height: 32px; background: #ff4400; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        .cart-float { position: fixed; bottom: 30px; right: 30px; width: 120px; height: 44px; background: #ff4400; color: #fff; text-align: center; line-height: 44px; border-radius: 22px; text-decoration: none; font-size: 15px; z-index: 100; }
+    </style>
+</head>
+<body>
+<div class="msg-tip"></div>
+<header>
+    <a href="./index.html">← 返回首页</a>
+    <h3 id="shopTitle">加载中...</h3>
+</header>
+<div class="wrap">
+    <div class="shop-banner" id="shopBanner" style="display:none">
+        <h2 id="shopName"></h2>
+        <div class="info" id="shopInfo"></div>
+    </div>
+    <div class="cat-tabs" id="catTabs"></div>
+    <div class="dish-list" id="foodBox"></div>
+</div>
+<a href="./cart.html" class="cart-float">🛒 去购物车</a>
+
+<script src="../js/common.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/shop.js"></script>
+</body></html>

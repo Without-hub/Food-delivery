@@ -1,5 +1,6 @@
 package com.example.fooddelivery.mapper;
 
+import com.example.fooddelivery.dto.CartDTO;
 import com.example.fooddelivery.entity.Cart;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -10,6 +11,8 @@ import java.util.List;
 public interface CartMapper {
 
     List<Cart> selectByUserId(@Param("userId") Long userId);
+
+    List<CartDTO> selectDTOByUserId(@Param("userId") Long userId);
 
     int deleteByUserId(@Param("userId") Long userId);
 

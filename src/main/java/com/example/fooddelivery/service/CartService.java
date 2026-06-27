@@ -1,5 +1,6 @@
 package com.example.fooddelivery.service;
 
+import com.example.fooddelivery.dto.CartDTO;
 import com.example.fooddelivery.entity.Cart;
 import java.util.List;
 
@@ -9,4 +10,5 @@ public interface CartService {
     void deleteCart(Long id);
     void clearCart(Long userId);
     List<Cart> getUserCart(Long userId);
+    List<CartDTO> getUserCartWithDish(Long userId);
 }
