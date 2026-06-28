@@ -1,200 +1,81 @@
-# 外卖点餐系统 — 课程设计
+# 🍜 外卖点餐系统 — Food Delivery System
 
-> **当前状态**：全部模块已完成开发与合并，集成测试通过率 100%（26/26 接口），前端功能完整可用
+> 一个功能完整的外卖点餐系统，包含用户端移动端页面 + 管理端后台 + RESTful API，支持从浏览店铺到下单评价的全流程。
+
+---
 
 ## 技术栈
 
 | 层级 | 技术 |
 |------|------|
-| 后端框架 | Spring Boot 3.2.0 |
-| ORM | MyBatis 3.0.3 |
-| 数据库 | MySQL 8.0 |
-| 用户端前端 | HTML + CSS + JavaScript（原生） |
-| 管理端前端 | React 18 + TypeScript + Ant Design 5 + ECharts |
-| 构建工具 | Maven 3.6+ / Vite 5 |
-| 版本控制 | Git (Gitee) |
+| **后端框架** | Spring Boot 3.2.0 |
+| **ORM** | MyBatis 3.0.3 |
+| **数据库** | MySQL 8.0 |
+| **用户端前端** | 原生 HTML + CSS + JavaScript（美团风格移动端） |
+| **管理端前端** | React 18 + TypeScript + Ant Design 5 + ECharts |
+| **构建工具** | Maven 3.6+ / Vite 5 |
+| **版本控制** | Git |
+| **图片资源** | Unsplash 高清美食图片（本地存储） |
+
+---
 
 ## 项目结构
 
 ```
 food-delivery/
 ├── src/main/java/com/example/fooddelivery/
-│   ├── config/             # 配置类
-│   ├── controller/         # 控制层（7 个 Controller）
-│   ├── service/            # 服务接口层
-│   │   └── impl/           # 服务实现层
-│   ├── mapper/             # 数据访问层
-│   ├── entity/             # 实体层（9 个 Entity）
-│   └── dto/                # 数据传输对象
+│   ├── config/              # 全局异常处理
+│   ├── controller/          # 7 个 REST 控制器
+│   ├── service/             # 服务接口 + 实现
+│   ├── mapper/              # MyBatis 数据访问
+│   ├── entity/              # 9 个数据实体
+│   └── dto/                 # 数据传输对象
 ├── src/main/resources/
-│   ├── mapper/             # MyBatis XML 映射（7 个）
-│   ├── sql/                # 数据库脚本（schema + test-data）
+│   ├── mapper/              # 7 个 MyBatis XML 映射
+│   ├── sql/                 # 建表脚本 + 测试数据
+│   ├── static/              # 前端静态资源（可直接访问）
+│   │   ├── html/            # 8 个前端页面
+│   │   ├── css/             # 全局样式
+│   │   ├── js/              # 业务逻辑
+│   │   └── images/          # 18 张美食图片
 │   └── application.yml
-├── frontend-user/          # 用户端（7 个页面）
-│   ├── html/
-│   ├── css/
-│   └── js/
-├── admin-frontend/         # 管理端（React + Vite）
-│   ├── src/
-│   │   ├── api/            # API 请求层
-│   │   ├── pages/          # 11 个页面
-│   │   ├── layouts/        # 布局组件
-│   │   ├── store/          # 状态管理（Zustand）
-│   │   └── utils/          # 工具函数
-│   └── package.json
+├── frontend-user/           # 用户端前端（源文件）
+├── admin-frontend/          # 管理端（React + Vite）
 └── pom.xml
 ```
 
-## UI 展示
+---
 
-系统采用**美团风格**移动端设计，桌面打开自动居中显示手机容器框：
+## 功能展示
 
-| 页面 | 功能 |
-|------|------|
-| 🏠 **首页** | Banner轮播、分类导航、双列店铺卡片、浮动购物车角标 |
-| 🏪 **店铺详情** | 店铺信息、横向分类Tab、双列菜品列表、底部已选合计 |
-| 🛒 **购物车** | 商品列表、数量加减、清空、结算 |
-| 📝 **结算页** | 地址选择、新增地址、备注、商品清单、价格明细 |
-| 📋 **订单列表** | 状态筛选Tab、订单卡片(缩略图)、评价弹窗、配送跟踪入口 |
-| 🚚 **配送跟踪** | 进度条动画、虚拟地图、配送员信息、实时状态模拟 |
+系统采用**美团风格**移动端设计，桌面浏览器打开自动居中显示手机容器框，模拟真实 App 体验。
 
-所有图片使用 Unsplash 高清美食图片，本地存储于 `/images/` 目录。
-
-## 快速启动
-
-### 1. 数据库
-```sql
--- 在 MySQL 中执行
-source src/main/resources/sql/schema.sql;
-source src/main/resources/sql/test-data.sql;
-```
-
-### 2. 后端
-```bash
-# IDEA 中运行 FoodDeliveryApplication.java
-# 或命令行
-mvn spring-boot:run
-# 启动后访问 http://localhost:8080
-```
-
-### 3. 用户端前端（已集成到 Spring Boot）
-前端文件已放入 `src/main/resources/static/`，启动后端后直接访问：
-```
-http://localhost:8080/html/login.html
-```
-测试账号：`testuser` / `123456`
-
-### 4. 管理端前端
-```bash
-cd admin-frontend
-npm install
-npm run dev
-# 浏览器访问 http://localhost:5173
-```
-
-## Git 协作规范
-
-### 分支策略
-
-```
-main ← dev ← feature-xxx
-```
-
-| 分支 | 负责人 | 模块 | 状态 |
-|------|--------|------|------|
-| `feature-order` | 魏子皓（组长） | 订单模块 | ✅ 已合并 |
-| `feature-user` | 李享洋 | 用户模块 + 地址管理 | ✅ 已合并 |
-| `feature-shop` | 毛帅 | 商家模块 + 菜品模块 | ✅ 已合并 |
-| `feature-cart` | 赵涵 | 购物车模块 | ✅ 已合并 |
-| `feature-review` | 赵涵 | 评价模块 | ✅ 已合并 |
-| `feature-front-user` | 张一风 | 用户端前端 7 页 | ✅ 已合并 |
-| `feature-front-admin` | 黄金麟 | 管理端前端 | ✅ 已合并 |
-
-### 工作流程
-
-1. 克隆仓库：`git clone https://gitee.com/wi-without/online-food-ordering-system.git`
-2. 切换到自己的功能分支：`git checkout feature-xxx`
-3. 开发完成后提交：`git add . && git commit -m "[模块] 操作描述"`
-4. 推送分支：`git push origin feature-xxx`
-5. 在 Gitee 上向 `dev` 分支发起 Pull Request
-6. 组长审查后合并
-
-### 提交规范
-
-格式：`[模块] 操作描述`，如 `[order] 完成下单事务逻辑`
+| 页面 | 功能亮点 |
+|------|---------|
+| 🏠 **首页** | Banner 轮播、8 个分类导航、双列店铺卡片、浮动购物车角标、搜索过滤 |
+| 🏪 **店铺详情** | 店铺信息展示、横向分类 Tab 切换、双列菜品列表、底部已选合计 |
+| 🛒 **购物车** | 商品列表、数量加减（减到 1 时自动删除）、清空购物车、底部结算 |
+| 📝 **结算页** | 地址选择、**新增地址弹窗**、备注输入、商品清单、价格明细（含配送费） |
+| 📋 **订单列表** | 状态筛选 Tab（全部/待付款/已支付/配送中/已完成/已取消）、订单卡片、评价弹窗、配送跟踪入口 |
+| 🚚 **配送跟踪** | 进度条动画（已接单→备餐中→配送中→已送达）、虚拟地图、配送员信息、实时状态模拟 |
+| 🔑 **登录/注册** | 卡片式设计、渐变背景、表单验证 |
 
 ---
 
-## 开发任务清单
-
-### 后端模块（全部完成）
-
-| 模块 | 负责人 | 接口数 | 状态 |
-|------|--------|--------|------|
-| 订单模块 | 魏子皓 | 5 | ✅ |
-| 用户模块 | 李享洋 | 3 | ✅ |
-| 地址管理 | 李享洋 | 5 | ✅ |
-| 商家模块 | 毛帅 | 3 | ✅ |
-| 菜品模块 | 毛帅 | 3 | ✅ |
-| 购物车模块 | 赵涵 | 5 | ✅ |
-| 评价模块 | 赵涵 | 5 | ✅ |
-
-### 前端页面（全部完成）
-
-**用户端（张一风）— 7 页**
-
-| 页面 | 文件 | 状态 |
-|------|------|------|
-| 登录 | login.html | ✅ |
-| 注册 | register.html | ✅ |
-| 首页 | index.html | ✅ |
-| 商家详情 | shop.html | ✅ |
-| 购物车 | cart.html | ✅ |
-| 下单确认 | order.html | ✅ |
-| 订单列表 | order-list.html | ✅ |
-| 配送跟踪 | tracking.html | ✅ |
-
-**管理端（黄金麟）— 4 核心页 + 7 扩展页**
-
-| 页面 | 路由 | 状态 |
-|------|------|------|
-| 数据概览 | /dashboard | ✅ |
-| 用户管理 | /users | ✅ |
-| 订单管理 | /orders | ✅ |
-| 数据统计 | /statistics（含 ECharts） | ✅ |
-
----
-
-## 数据库表（9 张）
-
-| 表名 | 说明 | 外键关系 |
-|------|------|----------|
-| `user` | 用户表 | — |
-| `shop` | 商家表 | — |
-| `category` | 菜品分类表 | `shop_id` → shop |
-| `dish` | 菜品表 | `shop_id` → shop, `category_id` → category |
-| `cart` | 购物车表 | `user_id` → user, `dish_id` → dish |
-| `address` | 收货地址表 | `user_id` → user |
-| `order` | 订单表 | `user_id` → user, `address_id` → address, `shop_id` → shop |
-| `order_item` | 订单明细表 | `order_id` → order, `dish_id` → dish |
-| `review` | 评价表 | `user_id` → user, `order_id` → order, `dish_id` → dish |
-
----
-
-## API 接口文档
+## API 接口（共 29 个）
 
 ### 用户模块
 | 方法 | 路径 | 说明 |
 |------|------|------|
 | POST | `/user/register` | 用户注册 |
 | POST | `/user/login` | 用户登录 |
-| GET | `/user/info` | 获取用户信息（Header: userId） |
-| PUT | `/user/info` | 修改用户信息（Header: userId） |
+| GET | `/user/info` | 获取用户信息 |
+| PUT | `/user/info` | 修改用户信息 |
 
 ### 地址模块
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/address/list` | 地址列表（Header: userId） |
+| GET | `/address/list` | 地址列表 |
 | POST | `/address` | 新增地址 |
 | PUT | `/address/{id}` | 修改地址 |
 | DELETE | `/address/{id}` | 删除地址 |
@@ -203,69 +84,115 @@ main ← dev ← feature-xxx
 ### 商家模块
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/api/shop/list` | 商家列表 |
-| GET | `/api/shop/detail?shopId=` | 商家详情 |
-| GET | `/api/shop/filter/category?categoryId=` | 按分类筛选 |
+| GET | `/api/shop/list` | 商家列表（分页） |
+| GET | `/api/shop/detail` | 商家详情 |
+| GET | `/api/shop/filter/category` | 按分类筛选商家 |
 
 ### 菜品模块
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/api/dish/category/list?shopId=` | 菜品分类列表 |
-| GET | `/api/dish/list?shopId=&pageNum=&pageSize=` | 菜品分页搜索 |
-| GET | `/api/dish/detail?dishId=` | 菜品详情 |
+| GET | `/api/dish/category/list` | 菜品分类列表 |
+| GET | `/api/dish/list` | 菜品分页搜索 |
+| GET | `/api/dish/detail` | 菜品详情 |
 
 ### 购物车模块
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/cart/list?userId=` | 购物车列表 |
+| GET | `/cart/list` | 购物车列表（含菜品信息） |
 | POST | `/cart/add` | 添加商品 |
 | PUT | `/cart/update` | 修改数量 |
-| DELETE | `/cart/delete?id=` | 删除商品 |
-| DELETE | `/cart/clear?userId=` | 清空购物车 |
+| DELETE | `/cart/delete` | 删除商品 |
+| DELETE | `/cart/clear` | 清空购物车 |
 
 ### 订单模块
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| POST | `/api/orders` | 提交订单（下单事务） |
-| GET | `/api/orders` | 订单列表 |
+| POST | `/api/orders` | 提交订单（含事务） |
+| GET | `/api/orders` | 订单列表（支持状态筛选） |
 | GET | `/api/orders/{id}` | 订单详情（含明细） |
 | PUT | `/api/orders/{id}/cancel` | 取消订单 |
-| PUT | `/api/orders/{id}/status?status=` | 修改订单状态 |
+| PUT | `/api/orders/{id}/status` | 修改订单状态 |
 
 ### 评价模块
 | 方法 | 路径 | 说明 |
 |------|------|------|
 | POST | `/review/add` | 添加评价 |
 | DELETE | `/review/delete` | 删除评价 |
-| GET | `/review/dish?dishId=` | 菜品评价列表 |
-| GET | `/review/my?userId=` | 我的评价 |
-| GET | `/review/rating?dishId=` | 菜品评分计算 |
+| GET | `/review/dish` | 菜品评价列表 |
+| GET | `/review/my` | 我的评价 |
+| GET | `/review/rating` | 菜品评分统计 |
+
+---
+
+## 数据库设计（9 张表）
+
+```
+user ──→ address    用户拥有多个收货地址
+user ──→ cart       用户拥有购物车
+user ──→ order      用户提交订单
+shop ──→ category   商家拥有多个菜品分类
+shop ──→ dish       商家上架菜品
+shop ──→ order      订单归属商家
+category ──→ dish   菜品属于某个分类
+order ──→ order_item 订单包含多个明细
+order ──→ review    订单可评价
+dish ──→ review     评价关联菜品
+```
+
+---
+
+## 快速启动
+
+### 1. 数据库初始化
+```sql
+-- 在 MySQL 中依次执行
+source src/main/resources/sql/schema.sql;
+source src/main/resources/sql/test-data.sql;
+```
+
+### 2. 启动后端
+```bash
+mvn spring-boot:run
+# 访问 http://localhost:8080
+```
+
+### 3. 用户端（已集成到后端）
+```
+http://localhost:8080/html/login.html
+```
+测试账号：**testuser** / **123456**
+
+### 4. 管理端
+```bash
+cd admin-frontend
+npm install
+npm run dev
+# 访问 http://localhost:5173
+```
 
 ---
 
 ## 测试数据
 
-| 账号 | 用户名 | 密码 | 角色 |
-|------|--------|------|------|
-| 测试用户 | testuser | 123456 | 普通用户 |
-| 管理员 | admin | 123456 | 管理员 |
-
-测试商家（6 家）：老王快餐、张姐小吃、茶百道、首尔炸鸡、一兰拉面、老北京烤鸭
-测试订单（10 个）：覆盖待支付、已支付、配送中、已完成、已取消五种状态
+| 类型 | 数量 | 说明 |
+|------|------|------|
+| 用户 | 2 | testuser（普通用户）、admin（管理员） |
+| 商家 | 6 | 老王快餐、张姐小吃、茶百道、首尔炸鸡、一兰拉面、老北京烤鸭 |
+| 菜品 | 45+ | 覆盖快餐、小吃、茶饮、炸鸡、日料、中餐六大类 |
+| 订单 | 10 | 覆盖待支付、已支付、配送中、已完成、已取消五种状态 |
+| 评价 | 6 | 真实用户评价内容 |
+| 图片 | 18 | Unsplash 高清美食图 |
 
 ---
 
-## 项目进度
+## 项目总结
 
-| 阶段 | 状态 |
-|------|------|
-| 项目架构搭建 | ✅ 已完成 |
-| 数据库设计 | ✅ 已完成 |
-| 后端模块开发（29 个 API） | ✅ 已完成 |
-| 前端页面开发（用户端 7 + 管理端 11） | ✅ 已完成 |
-| 代码审查与修复 | ✅ 已完成 |
-| 分支合并 | ✅ 已完成 |
-| 集成测试 | ✅ 已完成（24/24 通过） |
-| 前端功能完善（分类/地址新增/评价） | ✅ 已完成 |
-| 课程设计报告 | 🔲 进行中 |
-| 答辩准备 | 🔲 待进行 |
+本项目从零搭建了一个完整的外卖点餐系统，涵盖以下核心能力：
+
+**后端方面：** 基于 Spring Boot + MyBatis 实现 RESTful API，包含 7 大模块 29 个接口，涉及完整的事务处理（下单扣库存清购物车）、数据关联查询、状态流转控制。
+
+**前端方面：** 用户端采用原生 HTML/CSS/JS 开发美团风格移动端界面，包含 8 个页面（含配送跟踪页），支持地址管理、购物车操作、订单评价等完整交互流程。管理端使用 React + Ant Design 实现数据可视化和后台管理。
+
+**数据库方面：** 设计了 9 张关联表，支持用户、商家、菜品、购物车、订单、评价等实体关系，外键约束保证数据完整性。
+
+**视觉方面：** 配置了 18 张 Unsplash 高清美食图片，桌面端显示手机容器框模拟真实 App 体验。
