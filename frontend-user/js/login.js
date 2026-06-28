@@ -9,7 +9,8 @@ loginBtn.onclick = async function () {
     try {
         const res = await Api.login({ username, password: pwd });
         if (res.code === 200) {
-            Common.setToken(res.data.token);
+            Common.setToken(res.data);
+            Common.setUserId(1);
             Common.showMsg("登录成功");
             // 跳首页
             setTimeout(() => location.href = "./index.html", 1200);

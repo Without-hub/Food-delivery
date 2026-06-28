@@ -2,54 +2,56 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>用户注册</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>注册 - 外卖点餐</title>
     <link rel="stylesheet" href="../css/common.css">
     <style>
-        .reg-box {
-            width: 400px;
-            margin: 100px auto;
-            padding: 30px;
-        }
-        .reg-box h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .item {
-            margin-bottom: 18px;
-        }
-        .item input {
-            width: 100%;
-            height: 44px;
-            padding: 0 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-        }
-        .tip-link {
-            text-align: right;
-            margin-top: 10px;
-        }
+        body { background: linear-gradient(180deg, #FFB800 0%, #FFD54F 20%, #FFF8E1 50%, #F5F6FA 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .reg-wrap { width: 100%; max-width: 380px; padding: 20px; }
+        .reg-card { background: #fff; border-radius: var(--radius-xl); padding: 36px 28px 28px; box-shadow: var(--shadow-lg); }
+        .logo-area { text-align: center; margin-bottom: 28px; }
+        .logo-area .logo { width: 64px; height: 64px; background: linear-gradient(135deg, var(--accent), #FFD54F); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 32px; box-shadow: 0 8px 24px rgba(255,184,0,0.3); }
+        .logo-area h2 { font-size: 24px; font-weight: 800; }
+        .logo-area p { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+        .input-group { position: relative; margin-bottom: 14px; }
+        .input-group .icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-muted); z-index: 1; }
+        .input-group input { width: 100%; height: 48px; padding: 0 14px 0 44px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: 15px; background: var(--bg); transition: all var(--transition); }
+        .input-group input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(255,107,53,0.08); }
+        .reg-btn { width: 100%; height: 48px; background: linear-gradient(135deg, var(--accent), #FFD54F); color: #fff; border: none; border-radius: var(--radius); font-size: 16px; font-weight: 700; cursor: pointer; letter-spacing: 1px; box-shadow: 0 4px 16px rgba(255,184,0,0.35); transition: all var(--transition); margin-top: 8px; }
+        .reg-btn:active { transform: scale(0.98); }
+        .reg-footer { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-secondary); }
+        .reg-footer a { color: var(--primary); font-weight: 600; }
     </style>
 </head>
 <body>
 <div class="msg-tip"></div>
-<div class="card reg-box">
-    <h2>外卖点餐-用户注册</h2>
-    <div class="item">
-        <input type="text" id="name" placeholder="请输入用户名">
-    </div>
-    <div class="item">
-        <input type="text" id="phone" placeholder="请输入手机号">
-    </div>
-    <div class="item">
-        <input type="password" id="pwd" placeholder="请设置密码（不少于6位）">
-    </div>
-    <button class="btn" id="regBtn">立即注册</button>
-    <div class="tip-link">
-        <a href="./login.html">已有账号？去登录</a>
+<div class="reg-wrap animate-in">
+    <div class="reg-card">
+        <div class="logo-area">
+            <div class="logo">🎉</div>
+            <h2>创建账号</h2>
+            <p>加入我们，开启美食之旅</p>
+        </div>
+        <div class="input-group">
+            <span class="icon">👤</span>
+            <input type="text" id="name" placeholder="请输入用户名">
+        </div>
+        <div class="input-group">
+            <span class="icon">📱</span>
+            <input type="text" id="phone" placeholder="请输入手机号">
+        </div>
+        <div class="input-group">
+            <span class="icon">🔒</span>
+            <input type="password" id="pwd" placeholder="请设置密码（不少于6位）">
+        </div>
+        <button class="reg-btn" id="regBtn">立即注册</button>
+        <div class="reg-footer">
+            已有账号？<a href="./login.html">去登录</a>
+        </div>
     </div>
 </div>
-
 <script src="../js/common.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/register.js"></script>
 </body>
+</html>

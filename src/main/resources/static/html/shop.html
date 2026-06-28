@@ -2,48 +2,91 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>店铺详情</title>
     <link rel="stylesheet" href="../css/common.css">
     <style>
-        header { height: 60px; background: #fff; box-shadow: 0 1px 4px #eee; display: flex; align-items: center; padding: 0 40px; }
-        header a { margin-right: 30px; }
-        .wrap { width: 1200px; margin: 0 auto; }
-        .shop-banner { background: linear-gradient(135deg, #ff4400, #ff6b35); color: #fff; padding: 24px 30px; margin: 20px 0; border-radius: 10px; }
-        .shop-banner h2 { font-size: 24px; margin-bottom: 10px; }
-        .shop-banner .info { font-size: 14px; opacity: 0.9; line-height: 1.8; }
-        .cat-tabs { display: flex; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
-        .cat-tab { padding: 6px 18px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 14px; }
-        .cat-tab.active { background: #ff4400; color: #fff; border-color: #ff4400; }
-        .dish-list { margin: 20px 0; }
-        .cat-title { font-size: 18px; font-weight: bold; margin: 20px 0 10px; padding-left: 8px; border-left: 4px solid #ff4400; }
-        .food-item { display: flex; padding: 14px 0; border-bottom: 1px solid #eee; align-items: center; }
-        .food-item img { width: 80px; height: 80px; margin-right: 16px; border-radius: 6px; background: #f5f5f5; }
-        .food-info { flex: 1; }
-        .food-info .name { font-weight: bold; font-size: 15px; }
-        .food-info .desc { color: #999; font-size: 12px; margin: 4px 0; }
-        .food-info .price { color: #f40; font-size: 16px; font-weight: bold; }
-        .food-info .origin { color: #999; text-decoration: line-through; font-size: 12px; margin-left: 8px; }
-        .add-cart-btn { width: 80px; height: 32px; background: #ff4400; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-        .cart-float { position: fixed; bottom: 30px; right: 30px; width: 120px; height: 44px; background: #ff4400; color: #fff; text-align: center; line-height: 44px; border-radius: 22px; text-decoration: none; font-size: 15px; z-index: 100; }
+        .shop-cover {
+            background: #fff;
+            margin: 0 16px 12px;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+        .shop-cover .avatar {
+            width: 72px; height: 72px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--bg);
+        }
+        .shop-cover .info { flex: 1; }
+        .shop-cover .info h2 { font-size: 20px; font-weight: 700; }
+        .shop-cover .info .meta { font-size: 13px; color: var(--text-secondary); margin-top: 4px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .shop-cover .info .desc { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .food-grid { padding-bottom: 80px; }
+        .food-card .food-img { height: 120px; }
+        .food-card .add-btn {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,var(--primary),#FF8C5A);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255,107,53,0.3);
+            flex-shrink: 0;
+        }
+        .food-card .add-btn:active { transform: scale(0.9); }
+        .food-card .food-bottom .price { font-size: 15px; }
+        .cat-tab { display: inline-block; }
     </style>
 </head>
 <body>
 <div class="msg-tip"></div>
-<header>
-    <a href="./index.html">← 返回首页</a>
-    <h3 id="shopTitle">加载中...</h3>
-</header>
-<div class="wrap">
-    <div class="shop-banner" id="shopBanner" style="display:none">
-        <h2 id="shopName"></h2>
-        <div class="info" id="shopInfo"></div>
+<div class="app-container">
+    <div class="app-header">
+        <a href="./index.html" class="back">←</a>
+        <h1 id="shopTitle">加载中...</h1>
+        <span class="header-action" onclick="location.href='./cart.html'">🛒</span>
     </div>
-    <div class="cat-tabs" id="catTabs"></div>
-    <div class="dish-list" id="foodBox"></div>
-</div>
-<a href="./cart.html" class="cart-float">🛒 去购物车</a>
 
+    <div class="page-enter" style="padding-top:12px;">
+        <!-- 店铺信息 -->
+        <div class="shop-cover">
+            <img class="avatar" id="shopImg" src="" alt="">
+            <div class="info">
+                <h2 id="shopName">---</h2>
+                <div class="meta" id="shopMeta"></div>
+                <div class="desc" id="shopDesc"></div>
+            </div>
+        </div>
+
+        <!-- 分类 Tabs -->
+        <div class="tab-bar" id="catTabs"></div>
+
+        <!-- 菜品列表 -->
+        <div class="food-grid" id="foodBox"></div>
+        <div class="safe-bottom"></div>
+    </div>
+
+    <!-- 底部总计 -->
+    <div class="fixed-bottom" id="bottomBar">
+        <div style="flex:1;">
+            <span style="font-size:12px;color:var(--text-secondary);">已选 </span>
+            <span style="font-size:16px;font-weight:800;color:var(--primary);" id="cartTotalInShop">¥0</span>
+        </div>
+        <a href="./cart.html" class="btn" style="width:130px;height:40px;font-size:14px;">去购物车</a>
+    </div>
+</div>
 <script src="../js/common.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/shop.js"></script>
-</body></html>
+</body>
+</html>

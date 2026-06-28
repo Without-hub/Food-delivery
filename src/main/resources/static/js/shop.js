@@ -1,109 +1,105 @@
 Common.checkLogin();
-const urlParams = new URLSearchParams(location.search);
-const shopId = urlParams.get("shopId");
+const shopId = new URLSearchParams(location.search).get("shopId");
 let allDishes = [];
+let cats = [];
 let currentCatId = null;
 
 async function loadShop() {
-    // 商家详情
-    const shopRes = await Api.getShopDetail(shopId);
-    if (shopRes.code === 200) {
-        const s = shopRes.data;
+    const sr = await Api.getShopDetail(shopId);
+    if (sr.code === 200) {
+        const s = sr.data;
         document.getElementById("shopTitle").innerText = s.name;
-        document.getElementById("shopBanner").style.display = "block";
         document.getElementById("shopName").innerText = s.name;
-        document.getElementById("shopInfo").innerHTML =
-            `⭐ ${s.rating || '暂无'}  |  🛵 配送费 ¥${s.deliveryFee}  |  起送 ¥${s.minPrice}  |  🕐 ${s.businessHours || '营业中'}<br>${s.description || ''}`;
+        document.getElementById("shopImg").src = s.logo || `/images/shop${shopId}.jpg`;
+        const r = s.rating ? parseFloat(s.rating).toFixed(1) : "新店";
+        const fee = s.deliveryFee ? parseFloat(s.deliveryFee).toFixed(0) : "免";
+        const minP = s.minPrice ? parseFloat(s.minPrice).toFixed(0) : "0";
+        document.getElementById("shopMeta").innerHTML = `⭐ ${r} | 月售${s.salesVolume||0} | 配送¥${fee} | 起送¥${minP}`;
+        document.getElementById("shopDesc").innerText = s.description || "";
     }
 
-    // 菜品分类
-    const catRes = await Api.getDishCategory(shopId);
-    const cats = catRes.code === 200 ? catRes.data : [];
+    const cr = await Api.getDishCategory(shopId);
+    cats = cr.code === 200 ? cr.data : [];
 
-    // 全部菜品
-    const dishRes = await Api.getDishByShop(shopId);
-    allDishes = dishRes.code === 200 ? dishRes.data : [];
+    const dr = await Api.getDishByShop(shopId);
+    allDishes = dr.code === 200 ? dr.data : [];
 
-    // 渲染分类标签
-    let catHtml = `<span class="cat-tab ${currentCatId === null ? 'active' : ''}" data-cat="">全部</span>`;
-    cats.forEach(c => {
-        catHtml += `<span class="cat-tab ${currentCatId === c.id ? 'active' : ''}" data-cat="${c.id}">${c.name}</span>`;
-    });
-    document.getElementById("catTabs").innerHTML = catHtml;
-
+    renderCats();
     renderDishes();
+}
+
+function renderCats() {
+    let h = `<span class="tab active" data-cat="">全部</span>`;
+    cats.forEach(c => { h += `<span class="tab" data-cat="${c.id}">${c.name}</span>`; });
+    document.getElementById("catTabs").innerHTML = h;
+    document.getElementById("catTabs").addEventListener("click", function(e) {
+        const t = e.target.closest(".tab");
+        if (!t) return;
+        currentCatId = t.dataset.cat || null;
+        currentCatId = currentCatId ? String(currentCatId) : null;
+        document.querySelectorAll("#catTabs .tab").forEach(tab => tab.classList.remove("active"));
+        t.classList.add("active");
+        renderDishes();
+    });
 }
 
 function renderDishes() {
     let dishes = allDishes;
-    if (currentCatId !== null) {
-        dishes = allDishes.filter(d => d.categoryId == currentCatId);
+    if (currentCatId) dishes = allDishes.filter(d => String(d.categoryId) === currentCatId);
+    const box = document.getElementById("foodBox");
+    if (!dishes.length) {
+        box.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">该分类暂无菜品</div>';
+        return;
     }
+    let html = "";
+    dishes.forEach(d => {
+        const img = d.image || `/images/food${((d.id - 1) % 12) + 1}.jpg`;
+        const hasOrig = d.originalPrice && parseFloat(d.originalPrice) > 0;
+        html += `
+            <div class="food-card" data-id="${d.id}" data-shop="${shopId}">
+                <img class="food-img" src="${img}" alt="${d.name}" loading="lazy">
+                <div class="food-body">
+                    <div class="food-name">${d.name}</div>
+                    <div class="food-meta">
+                        <span>月售 ${d.salesVolume || 0}</span>
+                    </div>
+                    <div class="food-bottom">
+                        <div>
+                            <span class="price">${parseFloat(d.price).toFixed(2)}</span>
+                            ${hasOrig ? `<span class="original-price">¥${parseFloat(d.originalPrice).toFixed(2)}</span>` : ''}
+                        </div>
+                        <span class="add-btn" data-id="${d.id}" data-shop="${shopId}">+</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    box.innerHTML = html;
 
-    // 按分类分组
-    if (currentCatId === null) {
-        // 全部模式：按分类分组显示
-        const catRes = Api.getDishCategory(shopId);
-        let html = "";
-        const cats = document.querySelectorAll(".cat-tab");
-        allDishes.forEach(d => {
-            html += `
-            <div class="food-item" data-food-id="${d.id}" data-shop-id="${shopId}">
-                <img src="${d.image || 'https://picsum.photos/id/20/80/80'}" alt="">
-                <div class="food-info">
-                    <div class="name">${d.name}</div>
-                    <div class="desc">${d.description || ''}</div>
-                    <span class="price">¥${d.price}</span>
-                    ${d.originalPrice ? `<span class="origin">¥${d.originalPrice}</span>` : ''}
-                    <span style="color:#999;font-size:12px;margin-left:8px">销量 ${d.salesVolume}</span>
-                </div>
-                <button class="add-cart-btn">加入购物车</button>
-            </div>`;
+    box.querySelectorAll(".add-btn").forEach(btn => {
+        btn.addEventListener("click", async function(e) {
+            e.stopPropagation();
+            const did = this.dataset.id;
+            const sid = this.dataset.shop;
+            const r = await Api.addCart(did, sid, 1);
+            if (r.code === 200) {
+                Common.showMsg("✅ 已加入购物车");
+                updateCartTotal();
+            } else Common.showMsg(r.message || "添加失败");
         });
-        if (allDishes.length === 0) html = "<div style='text-align:center;color:#999;padding:40px'>暂无菜品</div>";
-        document.getElementById("foodBox").innerHTML = html;
-    } else {
-        let html = "";
-        dishes.forEach(d => {
-            html += `
-            <div class="food-item" data-food-id="${d.id}" data-shop-id="${shopId}">
-                <img src="${d.image || 'https://picsum.photos/id/20/80/80'}" alt="">
-                <div class="food-info">
-                    <div class="name">${d.name}</div>
-                    <div class="desc">${d.description || ''}</div>
-                    <span class="price">¥${d.price}</span>
-                    ${d.originalPrice ? `<span class="origin">¥${d.originalPrice}</span>` : ''}
-                    <span style="color:#999;font-size:12px;margin-left:8px">销量 ${d.salesVolume}</span>
-                </div>
-                <button class="add-cart-btn">加入购物车</button>
-            </div>`;
-        });
-        if (dishes.length === 0) html = "<div style='text-align:center;color:#999;padding:40px'>该分类暂无菜品</div>";
-        document.getElementById("foodBox").innerHTML = html;
-    }
+    });
 }
 
-// 分类切换
-document.getElementById("catTabs").onclick = function(e) {
-    if (e.target.classList.contains("cat-tab")) {
-        currentCatId = e.target.dataset.cat || null;
-        currentCatId = currentCatId ? parseInt(currentCatId) : null;
-        document.querySelectorAll(".cat-tab").forEach(t => t.classList.remove("active"));
-        e.target.classList.add("active");
-        renderDishes();
-    }
-};
-
-// 加入购物车
-document.getElementById("foodBox").onclick = async function(e) {
-    if (e.target.classList.contains("add-cart-btn")) {
-        const itemDom = e.target.closest(".food-item");
-        const foodId = itemDom.dataset.foodId;
-        const sid = itemDom.dataset.shopId;
-        const res = await Api.addCart(foodId, sid, 1);
-        if (res.code === 200) Common.showMsg("已加入购物车");
-        else Common.showMsg(res.message || "添加失败");
-    }
-};
+async function updateCartTotal() {
+    try {
+        const r = await Api.getCartList();
+        if (r.code === 200 && r.data) {
+            const total = r.data.reduce((s, i) => s + Number(i.subtotal || i.price * i.quantity), 0);
+            document.getElementById("cartTotalInShop").innerText = "¥" + total.toFixed(2);
+        }
+    } catch(e) {}
+}
 
 loadShop();
+setInterval(updateCartTotal, 5000);
+setTimeout(updateCartTotal, 500);

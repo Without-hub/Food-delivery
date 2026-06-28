@@ -4,6 +4,11 @@ function request(opt) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         let url = BASE_URL + opt.url;
+        // GET 请求加时间戳防浏览器缓存
+        if (!opt.method || opt.method === "GET") {
+            const sep = url.includes("?") ? "&" : "?";
+            url += sep + "_t=" + Date.now();
+        }
         xhr.open(opt.method || "GET", url);
         xhr.setRequestHeader("token", Common.getToken());
         if (opt.method === "POST" || opt.method === "PUT") {
@@ -96,8 +101,8 @@ const Api = {
     },
 
     // ========== 评价 ==========
-    addReview(userId, dishId, orderId, content, rating) {
-        return request({ url: `/review/add?userId=${userId}&dishId=${dishId}&orderId=${orderId}&content=${encodeURIComponent(content)}&rating=${rating}`, method: "POST" })
+    addReview(dishId, orderId, content, rating) {
+        return request({ url: `/review/add?userId=${Common.getUserId()}&dishId=${dishId}&orderId=${orderId}&content=${encodeURIComponent(content)}&rating=${rating}`, method: "POST" })
     },
     getDishReviews(dishId) {
         return request({ url: `/review/dish?dishId=${dishId}` })

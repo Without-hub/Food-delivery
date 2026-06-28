@@ -12,6 +12,14 @@ const Common = {
     removeToken() {
         localStorage.removeItem("userToken");
     },
+    // 存储userId
+    setUserId(uid) {
+        localStorage.setItem("userId", uid);
+    },
+    // 获取userId
+    getUserId() {
+        return localStorage.getItem("userId") || "1";
+    },
     // 判断是否登录，未登录跳登录页
     checkLogin() {
         const token = this.getToken();

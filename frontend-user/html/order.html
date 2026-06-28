@@ -1,80 +1,121 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>确认订单</title>
-    <link rel="stylesheet" href="../css/common.css">
-    <style>
-        header {
-            height: 60px;
-            background: #fff;
-            box-shadow: 0 1px 4px #eee;
-            display: flex;
-            align-items: center;
-            padding: 0 40px;
-        }
-        .wrap {
-            width: 1200px;
-            margin: 30px auto;
-        }
-        .addr-card {
-            padding: 16px;
-            border: 1px solid #eee;
-            margin-bottom: 20px;
-        }
-        .goods-list {
-            margin: 20px 0;
-        }
-        .goods-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .submit-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background: #fff;
-            box-shadow: 0 -1px 6px #eee;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 40px;
-        }
-        .total-text {
-            font-size: 18px;
-            color: #f40;
-            margin-right: 20px;
-        }
-        .submit-order-btn {
-            width: 120px;
-            height: 40px;
-            background: #ff4400;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>确认订单</title>
+<link rel="stylesheet" href="../css/common.css">
+<style>
+.addr-card { background:#fff; border-radius:var(--radius); margin:0 16px 12px; padding:16px; box-shadow:var(--shadow-sm); }
+.addr-card .addr-name { font-weight:600; font-size:15px; margin-bottom:4px; }
+.addr-card .addr-name span { font-weight:400; color:var(--text-secondary); margin-left:8px; }
+.addr-card .addr-detail { font-size:13px; color:var(--text-secondary); }
+.addr-card .default-tag { display:inline-block; background:var(--primary-light); color:var(--primary); font-size:11px; padding:1px 8px; border-radius:10px; margin-left:8px; font-weight:600; }
+.goods-card { background:#fff; border-radius:var(--radius); margin:0 16px 12px; padding:16px; box-shadow:var(--shadow-sm); }
+.goods-card .goods-item { display:flex; justify-content:space-between; align-items:center; padding:8px 0; }
+.goods-card .goods-item+.goods-item { border-top:1px solid var(--border); }
+.goods-card .goods-name { font-size:14px; font-weight:500; }
+.goods-card .goods-meta { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.summary-card { background:#fff; border-radius:var(--radius); margin:0 16px 12px; padding:16px; box-shadow:var(--shadow-sm); }
+.summary-card .row { display:flex; justify-content:space-between; padding:6px 0; font-size:14px; color:var(--text-secondary); }
+.summary-card .row.total { border-top:1px solid var(--border); margin-top:6px; padding-top:12px; font-size:16px; font-weight:700; color:var(--text); }
+.summary-card .row.total .val { color:var(--primary); font-size:20px; }
+.remark-box { background:#fff; border-radius:var(--radius); margin:0 16px 12px; padding:16px; box-shadow:var(--shadow-sm); }
+.remark-box textarea { width:100%; border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; font-size:14px; resize:vertical; min-height:60px; }
+.remark-box textarea:focus { border-color:var(--primary); }
+.addr-radio-item { display:flex; align-items:flex-start; gap:10px; padding:12px 0; cursor:pointer; }
+.addr-radio-item+.addr-radio-item { border-top:1px solid var(--border); }
+.addr-radio-item input[type="radio"] { margin-top:3px; accent-color:var(--primary); flex-shrink:0; }
+.addr-add-btn { display:flex; align-items:center; justify-content:center; gap:6px; padding:12px; border:2px dashed var(--border); border-radius:var(--radius); color:var(--text-secondary); font-size:14px; cursor:pointer; transition:all var(--transition); margin:0 16px 12px; }
+.addr-add-btn:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-light); }
+</style>
 </head>
 <body>
 <div class="msg-tip"></div>
-<header>
-    <a href="./cart.html">← 返回购物车</a>
-    <h3>确认订单</h3>
-</header>
-<div class="wrap">
-    <div class="addr-card" id="addrBox">加载收货地址...</div>
-    <div class="goods-list" id="goodsBox"></div>
-</div>
-<div class="submit-bar">
-    <div>实付：<span class="total-text" id="payTotal">¥0.00</span></div>
-    <button class="submit-order-btn" id="submitBtn">提交订单</button>
+<div class="app-container" style="padding-bottom:0;">
+
+<div class="app-header">
+<a href="./cart.html" class="back">←</a>
+<h1>确认订单</h1>
 </div>
 
+<div class="page-enter" style="padding-top:12px;">
+
+<div class="section-title" style="padding:0 16px;margin-bottom:8px;">📍 收货地址</div>
+<div id="addrBox" class="addr-card" style="cursor:default;">加载中...</div>
+<div class="addr-add-btn" id="showAddrForm">＋ 新增收货地址</div>
+
+<div class="section-title" style="padding:0 16px;margin:12px 0 8px;">🛍️ 商品明细</div>
+<div class="goods-card" id="goodsBox"></div>
+
+<div class="section-title" style="padding:0 16px;margin:12px 0 8px;">📝 备注</div>
+<div class="remark-box"><textarea id="remarkInput" placeholder="如：不要辣、少放盐等"></textarea></div>
+
+<div class="section-title" style="padding:0 16px;margin:12px 0 8px;">💰 价格明细</div>
+<div class="summary-card">
+<div class="row"><span>商品金额</span><span class="val" id="goodsTotal">¥0.00</span></div>
+<div class="row"><span>配送费</span><span class="val" id="deliveryFee">¥0.00</span></div>
+<div class="row total"><span>实付金额</span><span class="val" id="payTotal">¥0.00</span></div>
+</div>
+<div class="safe-bottom"></div>
+</div>
+
+<div class="fixed-bottom">
+<div style="flex:1;"><span style="font-size:13px;color:var(--text-secondary);">合计</span><span style="font-size:20px;font-weight:800;color:var(--primary);margin-left:4px;" id="bottomTotal">¥0.00</span></div>
+<button class="btn" id="submitBtn" style="width:140px;height:44px;">提交订单</button>
+</div>
+
+</div>
+
+<!-- 弹窗：放在 app-container 外面，fixed定位不受影响 -->
+<div id="addrPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);z-index:9999;align-items:center;justify-content:center;" class="">
+<div style="background:#fff;border-radius:var(--radius-xl);padding:28px 24px;width:340px;max-width:90vw;box-shadow:var(--shadow-xl);animation:scaleIn .3s ease;">
+<h3 style="font-size:18px;font-weight:700;margin-bottom:20px;text-align:center;">📍 新增收货地址</h3>
+<div style="margin-bottom:14px;"><input type="text" id="newName" placeholder="收货人姓名" style="width:100%;height:44px;padding:0 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:14px;"></div>
+<div style="margin-bottom:14px;"><input type="text" id="newPhone" placeholder="手机号码" style="width:100%;height:44px;padding:0 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:14px;"></div>
+<div style="margin-bottom:14px;"><input type="text" id="newDetail" placeholder="详细地址（如：学府路18号 3栋501）" style="width:100%;height:44px;padding:0 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:14px;"></div>
+<div style="display:flex;gap:10px;margin-top:18px;">
+<button id="cancelAddr" style="flex:1;height:42px;border-radius:var(--radius);background:var(--bg);color:var(--text-secondary);font-size:14px;font-weight:600;cursor:pointer;border:none;">取消</button>
+<button id="saveAddr" style="flex:1;height:42px;border-radius:var(--radius);background:linear-gradient(135deg,var(--primary),#FF8C5A);color:#fff;font-size:14px;font-weight:600;cursor:pointer;border:none;">保存</button>
+</div>
+</div>
+</div>
+
+<script>
+// 弹窗控制（放在 order.js 加载之前，确保事件绑定）
+document.addEventListener("DOMContentLoaded", function() {
+    var popup = document.getElementById("addrPopup");
+    var showBtn = document.getElementById("showAddrForm");
+    var cancelBtn = document.getElementById("cancelAddr");
+    var saveBtn = document.getElementById("saveAddr");
+    if (showBtn) showBtn.onclick = function() { popup.style.display = "flex"; };
+    if (cancelBtn) cancelBtn.onclick = function() { popup.style.display = "none"; };
+    if (saveBtn) saveBtn.onclick = async function() {
+        var name = document.getElementById("newName").value.trim();
+        var phone = document.getElementById("newPhone").value.trim();
+        var detail = document.getElementById("newDetail").value.trim();
+        if (!name) return Common.showMsg("请输入收货人姓名");
+        if (!phone || !/^1[3-9]\d{9}$/.test(phone)) return Common.showMsg("手机号格式不正确");
+        if (!detail) return Common.showMsg("请输入详细地址");
+        saveBtn.disabled = true; saveBtn.innerText = "保存中...";
+        var res = await Api.addAddress({ contactName: name, contactPhone: phone, detail: detail, province: "", city: "", district: "" });
+        if (res.code === 200) {
+            Common.showMsg("✅ 地址添加成功");
+            popup.style.display = "none";
+            document.getElementById("newName").value = "";
+            document.getElementById("newPhone").value = "";
+            document.getElementById("newDetail").value = "";
+            saveBtn.disabled = false; saveBtn.innerText = "保存";
+            if (typeof loadAddr === "function") loadAddr();
+        } else {
+            Common.showMsg(res.message || "添加失败");
+            saveBtn.disabled = false; saveBtn.innerText = "保存";
+        }
+    };
+});
+</script>
 <script src="../js/common.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/order.js"></script>
 </body>
+</html>

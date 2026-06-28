@@ -1,20 +1,21 @@
-// 后端统一基础地址（后续后端部署后替换真实地址）
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "";
 
-// 统一请求封装
 function request(opt) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         let url = BASE_URL + opt.url;
+        // GET 请求加时间戳防浏览器缓存
+        if (!opt.method || opt.method === "GET") {
+            const sep = url.includes("?") ? "&" : "?";
+            url += sep + "_t=" + Date.now();
+        }
         xhr.open(opt.method || "GET", url);
-        // 请求头携带token
         xhr.setRequestHeader("token", Common.getToken());
-        if (opt.method === "POST") {
+        if (opt.method === "POST" || opt.method === "PUT") {
             xhr.setRequestHeader("Content-Type", "application/json");
         }
         xhr.onload = function () {
             const res = JSON.parse(xhr.responseText);
-            // 未登录/登录过期
             if (res.code === 401) {
                 Common.removeToken();
                 location.href = "./login.html";
@@ -23,7 +24,6 @@ function request(opt) {
             resolve(res);
         }
         xhr.onerror = reject;
-        // post传参
         if (opt.data) {
             xhr.send(JSON.stringify(opt.data));
         } else {
@@ -32,65 +32,82 @@ function request(opt) {
     })
 }
 
-// 所有接口统一导出
 const Api = {
-    // ========== 用户模块（对接李享洋） ==========
-    // 登录
+    // ========== 用户 ==========
     login(data) {
-        return request({
-            url: "/user/login",
-            method: "POST",
-            data
-        })
+        return request({ url: "/user/login", method: "POST", data })
     },
-    // 注册
     register(data) {
-        return request({
-            url: "/user/register",
-            method: "POST",
-            data
-        })
-    },
-    // 获取用户地址列表
-    getAddressList() {
-        return request({ url: "/address/list" })
+        return request({ url: "/user/register", method: "POST", data })
     },
 
-    // ========== 商家菜品模块（对接毛帅） ==========
-    // 获取首页商家列表
+    // ========== 商家 ==========
     getShopList() {
-        return request({ url: "/shop/list" })
+        return request({ url: "/api/shop/list" })
     },
-    // 根据店铺id获取菜品
-    getFoodByShopId(shopId) {
-        return request({ url: `/food/list?shopId=${shopId}` })
+    getShopDetail(shopId) {
+        return request({ url: `/api/shop/detail?shopId=${shopId}` })
     },
 
-    // ========== 购物车模块（对接赵涵） ==========
-    // 查询购物车
+    // ========== 菜品 ==========
+    getDishCategory(shopId) {
+        return request({ url: `/api/dish/category/list?shopId=${shopId}` })
+    },
+    getDishByShop(shopId) {
+        return request({ url: `/api/dish/list?shopId=${shopId}` })
+    },
+    getDishDetail(dishId) {
+        return request({ url: `/api/dish/detail?dishId=${dishId}` })
+    },
+
+    // ========== 地址 ==========
+    getAddressList() {
+        return request({ url: `/address/list?userId=${Common.getUserId()}` })
+    },
+    addAddress(data) {
+        data.userId = Common.getUserId();
+        return request({ url: "/address?userId=" + Common.getUserId(), method: "POST", data })
+    },
+    deleteAddress(id) {
+        return request({ url: `/address/${id}?userId=${Common.getUserId()}`, method: "DELETE" })
+    },
+
+    // ========== 购物车 ==========
     getCartList() {
-        return request({ url: "/cart/list" })
+        return request({ url: `/cart/list?userId=${Common.getUserId()}` })
     },
-    // 添加购物车
-    addCart(data) {
-        return request({ url: "/cart/add", method: "POST", data })
+    addCart(dishId, shopId, quantity) {
+        const uid = Common.getUserId();
+        return request({ url: `/cart/add?userId=${uid}&dishId=${dishId}&shopId=${shopId}&quantity=${quantity || 1}`, method: "POST" })
     },
-    // 修改购物车数量
-    updateCart(data) {
-        return request({ url: "/cart/update", method: "POST", data })
+    updateCart(id, quantity) {
+        return request({ url: `/cart/update?id=${id}&quantity=${quantity}`, method: "PUT" })
     },
-    // 删除购物车商品
     delCart(cartId) {
-        return request({ url: `/cart/del?cartId=${cartId}` })
+        return request({ url: `/cart/delete?id=${cartId}`, method: "DELETE" })
     },
 
-    // ========== 订单模块（对接魏子皓组长） ==========
-    // 提交下单
+    // ========== 订单 ==========
     createOrder(data) {
         return request({ url: "/api/orders", method: "POST", data })
     },
-    // 获取订单列表
-    getOrderList(status = 0) {
-        return request({ url: `/api/orders?status=${status}` })
+    getOrderList(status) {
+        let url = "/api/orders";
+        if (status !== undefined && status !== null) url += "?status=" + status;
+        return request({ url: url })
+    },
+    cancelOrder(id) {
+        return request({ url: `/api/orders/${id}/cancel`, method: "PUT" })
+    },
+
+    // ========== 评价 ==========
+    addReview(dishId, orderId, content, rating) {
+        return request({ url: `/review/add?userId=${Common.getUserId()}&dishId=${dishId}&orderId=${orderId}&content=${encodeURIComponent(content)}&rating=${rating}`, method: "POST" })
+    },
+    getDishReviews(dishId) {
+        return request({ url: `/review/dish?dishId=${dishId}` })
+    },
+    getDishRating(dishId) {
+        return request({ url: `/review/rating?dishId=${dishId}` })
     }
-}
+};

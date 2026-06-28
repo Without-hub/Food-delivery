@@ -2,45 +2,83 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>我的订单</title>
     <link rel="stylesheet" href="../css/common.css">
     <style>
-        header {
-            height: 60px;
-            background: #fff;
-            box-shadow: 0 1px 4px #eee;
+        .tab-bar { position: sticky; top: 52px; z-index: 50; background: #fff; }
+        .order-list-wrap { padding-top: 8px; padding-bottom: 20px; }
+        .order-card .shop-row {
             display: flex;
             align-items: center;
-            padding: 0 40px;
+            gap: 8px;
+            margin-bottom: 8px;
         }
-        .wrap {
-            width: 1200px;
-            margin: 30px auto;
+        .order-card .shop-row .shop-avatar {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--bg);
         }
-        .order-item {
-            border: 1px solid #eee;
-            margin-bottom: 16px;
-            padding: 16px;
+        .order-card .shop-row .shop-name {
+            font-size: 14px;
+            font-weight: 600;
         }
-        .order-top {
+        .order-card .dish-thumbs {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
-        .status-tag {
-            color: #ff4400;
+        .order-card .dish-thumbs img {
+            width: 44px; height: 44px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+        }
+        .order-card .order-time {
+            font-size: 12px;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
 <div class="msg-tip"></div>
-<header>
-    <a href="./index.html">← 返回首页</a>
-    <h3>我的全部订单</h3>
-</header>
-<div class="wrap" id="orderBox"></div>
+<div class="app-container">
+    <div class="app-header">
+        <a href="./index.html" class="back">←</a>
+        <h1>我的订单</h1>
+        <span class="header-action" id="trackingDemo" title="配送演示">🚚</span>
+    </div>
+
+    <!-- 状态 Tab -->
+    <div class="tab-bar" id="statusTabs">
+        <span class="tab active" data-status="">全部</span>
+        <span class="tab" data-status="0">待付款</span>
+        <span class="tab" data-status="1">已支付</span>
+        <span class="tab" data-status="2">配送中</span>
+        <span class="tab" data-status="3">已完成</span>
+        <span class="tab" data-status="4">已取消</span>
+    </div>
+
+    <!-- 订单列表 -->
+    <div class="order-list-wrap" id="orderBox"></div>
+    <div class="safe-bottom"></div>
+</div>
+
+<!-- 评价弹窗 -->
+<div class="review-pop" id="reviewPop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);z-index:999;display:none;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:var(--radius-xl);padding:28px 24px;width:340px;max-width:90vw;box-shadow:var(--shadow-xl);animation:scaleIn .3s;">
+        <h4 style="font-size:18px;font-weight:700;text-align:center;margin-bottom:16px;">🌟 评价订单</h4>
+        <div style="text-align:center;font-size:30px;cursor:pointer;margin-bottom:16px;" id="starBox"></div>
+        <textarea id="reviewContent" placeholder="说说你的用餐体验..." style="width:100%;height:90px;border:1.5px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-size:14px;resize:vertical;"></textarea>
+        <div style="display:flex;gap:10px;margin-top:14px;">
+            <button id="closeReview" style="flex:1;height:42px;border-radius:var(--radius);background:var(--bg);color:var(--text-secondary);font-size:14px;font-weight:600;cursor:pointer;">取消</button>
+            <button id="submitReview" style="flex:1;height:42px;border-radius:var(--radius);background:linear-gradient(135deg,var(--primary),#FF8C5A);color:#fff;font-size:14px;font-weight:600;cursor:pointer;border:none;">提交</button>
+        </div>
+    </div>
+</div>
 
 <script src="../js/common.js"></script>
 <script src="../js/api.js"></script>
 <script src="../js/order-list.js"></script>
 </body>
+</html>
