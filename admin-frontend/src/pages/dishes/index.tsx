@@ -28,24 +28,7 @@ export default function DishesPage() {
       setData(result.list);
       setTotal(result.total);
     } catch {
-      const mockData: Dish[] = Array.from({ length: 12 }, (_, i) => ({
-        id: i + 1,
-        name: ['鱼香肉丝', '宫保鸡丁', '麻婆豆腐', '糖醋里脊', '水煮鱼', '回锅肉', '酸辣土豆丝', '西红柿炒蛋', '红烧排骨', '清炒时蔬', '东坡肉', '烤鸭'][i],
-        description: '美味可口',
-        price: 18 + Math.random() * 50,
-        image: '',
-        categoryId: (i % 4) + 1,
-        categoryName: ['川菜', '湘菜', '粤菜', '鲁菜'][i % 4],
-        shopId: 200 + (i % 5),
-        shopName: `商家${(i % 5) + 1}`,
-        status: i % 5 === 0 ? 0 : 1,
-        salesCount: 50 + Math.floor(Math.random() * 300),
-        rating: 3.5 + Math.random() * 1.5,
-        createTime: new Date().toISOString(),
-        updateTime: new Date().toISOString(),
-      }));
-      setData(mockData);
-      setTotal(36);
+      message.error('获取菜品列表失败');
     } finally {
       setLoading(false);
     }

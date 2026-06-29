@@ -28,19 +28,7 @@ export default function UsersPage() {
       setData(result.list);
       setTotal(result.total);
     } catch {
-      const mockData: User[] = Array.from({ length: 15 }, (_, i) => ({
-        id: i + 1,
-        username: ['admin', 'merchant1', 'rider1', 'zhangsan', 'lisi', 'wangwu', 'zhaoliu', 'sunqi', 'zhouba', 'wujiu', 'zhengshi', 'chenliu', 'liuqi', 'huangba', 'yangjiu'][i],
-        phone: `138${String(10000000 + i).padStart(8, '0')}`,
-        email: `user${i}@example.com`,
-        avatar: '',
-        role: (i === 0 ? 'admin' : i < 3 ? 'merchant' : i < 6 ? 'rider' : 'customer') as User['role'],
-        status: i % 7 === 0 ? 0 : 1,
-        createTime: new Date(Date.now() - i * 86400000).toISOString(),
-        updateTime: new Date().toISOString(),
-      }));
-      setData(mockData);
-      setTotal(45);
+      message.error('获取用户列表失败');
     } finally {
       setLoading(false);
     }

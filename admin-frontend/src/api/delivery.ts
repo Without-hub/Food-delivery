@@ -7,17 +7,17 @@ export interface DeliveryQueryParams extends PaginationParams {
 }
 
 export function getDeliveries(params: DeliveryQueryParams) {
-  return request.get<unknown, PaginatedResult<Delivery>>('/deliveries', { params });
+  return request.get<unknown, PaginatedResult<Delivery>>('/admin/deliveries', { params });
 }
 
 export function assignRider(id: number, riderId: number) {
-  return request.put<unknown, void>(`/deliveries/${id}/assign`, { riderId });
+  return request.put<unknown, void>(`/admin/deliveries/${id}/assign`, { riderId });
 }
 
 export function updateDeliveryStatus(id: number, status: number) {
-  return request.put<unknown, void>(`/deliveries/${id}/status`, { status });
+  return request.put<unknown, void>(`/admin/deliveries/${id}/status`, { status });
 }
 
 export function getAvailableRiders() {
-  return request.get<unknown, { id: number; name: string; phone: string }[]>('/deliveries/available-riders');
+  return request.get<unknown, { id: number; name: string; phone: string }[]>('/admin/deliveries/available-riders');
 }

@@ -34,25 +34,7 @@ export default function OrdersPage() {
       setData(result.list);
       setTotal(result.total);
     } catch {
-      // Mock data for development
-      const mockData: Order[] = Array.from({ length: 15 }, (_, i) => ({
-        id: i + 1,
-        orderNo: `ORD${Date.now()}${i}`,
-        userId: 100 + i,
-        userName: `用户${i + 1}`,
-        shopId: 200 + i,
-        shopName: `商家${(i % 5) + 1}`,
-        totalAmount: 25 + Math.random() * 100,
-        deliveryFee: 5,
-        paymentMethod: i % 3 === 0 ? 'alipay' : i % 3 === 1 ? 'wechat' : 'cash',
-        status: (i % 6) as OrderStatus,
-        addressId: 300 + i,
-        remark: i % 3 === 0 ? '少放辣' : '',
-        createTime: new Date(Date.now() - i * 3600000).toISOString(),
-        updateTime: new Date().toISOString(),
-      }));
-      setData(mockData);
-      setTotal(58);
+      message.error('获取订单列表失败');
     } finally {
       setLoading(false);
     }

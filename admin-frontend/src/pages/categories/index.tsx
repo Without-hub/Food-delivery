@@ -23,13 +23,7 @@ export default function CategoriesPage() {
       const result = await getCategories();
       setData(result);
     } catch {
-      setData([
-        { id: 1, name: '川菜', sort: 1, status: 1, createTime: '2024-01-01', updateTime: '2024-06-01' },
-        { id: 2, name: '湘菜', sort: 2, status: 1, createTime: '2024-01-01', updateTime: '2024-06-01' },
-        { id: 3, name: '粤菜', sort: 3, status: 1, createTime: '2024-01-01', updateTime: '2024-06-01' },
-        { id: 4, name: '鲁菜', sort: 4, status: 0, createTime: '2024-01-01', updateTime: '2024-06-01' },
-        { id: 5, name: '西北菜', sort: 5, status: 1, createTime: '2024-02-01', updateTime: '2024-06-01' },
-      ]);
+      message.error('获取分类列表失败');
     } finally {
       setLoading(false);
     }

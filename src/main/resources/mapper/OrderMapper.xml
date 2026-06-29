@@ -62,4 +62,84 @@
     <update id="updatePayTime">
         UPDATE `order` SET pay_time = NOW(), status = 1 WHERE id = #{id}
     </update>
+
+    <resultMap id="orderWithUserMap" type="com.example.fooddelivery.dto.AdminOrderVO">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="user_id" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="shop_id" property="shopId"/>
+        <result column="shopName" property="shopName"/>
+        <result column="total_price" property="totalAmount"/>
+        <result column="delivery_fee" property="deliveryFee"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="complete_time" property="completeTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectAdminOrders" resultMap="orderWithUserMap">
+        SELECT o.*, s.name AS shopName, u.username AS userName
+        FROM `order` o
+        LEFT JOIN shop s ON o.shop_id = s.id
+        LEFT JOIN user u ON o.user_id = u.id
+        <where>
+            <if test="status != null">AND o.status = #{status}</if>
+            <if test="orderNo != null and orderNo != ''">AND o.order_no LIKE CONCAT('%', #{orderNo}, '%')</if>
+        </where>
+        ORDER BY o.create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countAdminOrders" resultType="int">
+        SELECT COUNT(*) FROM `order` o
+        <where>
+            <if test="status != null">AND o.status = #{status}</if>
+            <if test="orderNo != null and orderNo != ''">AND o.order_no LIKE CONCAT('%', #{orderNo}, '%')</if>
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM `order` WHERE id = #{id}
+    </delete>
+
+    <select id="countTodayOrders" resultType="int">
+        SELECT COUNT(*) FROM `order` WHERE DATE(create_time) = CURDATE()
+    </select>
+
+    <select id="sumTodayRevenue" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(total_price), 0) FROM `order` WHERE DATE(create_time) = CURDATE() AND status IN (1,2,3)
+    </select>
+
+    <select id="countAllOrders" resultType="long">
+        SELECT COUNT(*) FROM `order`
+    </select>
+
+    <select id="sumTotalRevenue" resultType="java.math.BigDecimal">
+        SELECT IFNULL(SUM(total_price), 0) FROM `order` WHERE status IN (1,2,3)
+    </select>
+
+    <select id="groupOrdersByStatus" resultType="java.util.Map">
+        SELECT status, COUNT(*) as count FROM `order` GROUP BY status
+    </select>
+
+    <select id="dailyRevenueLast7Days" resultType="java.util.Map">
+        SELECT DATE(create_time) as date, IFNULL(SUM(total_price), 0) as revenue
+        FROM `order`
+        WHERE create_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) AND status IN (1,2,3)
+        GROUP BY DATE(create_time)
+        ORDER BY DATE(create_time)
+    </select>
+
+    <select id="selectTopDishes" resultType="java.util.Map">
+        SELECT d.id, d.name, IFNULL(SUM(oi.quantity), 0) as salesCount
+        FROM dish d
+        LEFT JOIN order_item oi ON d.id = oi.dish_id
+        GROUP BY d.id, d.name
+        ORDER BY salesCount DESC
+        LIMIT #{limit}
+    </select>
 </mapper>

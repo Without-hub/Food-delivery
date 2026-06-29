@@ -31,4 +31,39 @@
             #{oid}
         </foreach>
     </select>
+
+    <resultMap id="adminReviewMap" type="com.example.fooddelivery.dto.AdminReviewVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="order_id" property="orderId"/>
+        <result column="shopId" property="shopId"/>
+        <result column="shopName" property="shopName"/>
+        <result column="dish_id" property="dishId"/>
+        <result column="dishName" property="dishName"/>
+        <result column="rating" property="rating"/>
+        <result column="content" property="content"/>
+        <result column="images" property="images"/>
+        <result column="reply" property="replyContent"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectAdminReviews" resultMap="adminReviewMap">
+        SELECT r.*, u.username AS userName, d.name AS dishName,
+               d.shop_id AS shopId, s.name AS shopName
+        FROM review r
+        LEFT JOIN user u ON r.user_id = u.id
+        LEFT JOIN dish d ON r.dish_id = d.id
+        LEFT JOIN shop s ON d.shop_id = s.id
+        ORDER BY r.create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countAdminReviews" resultType="int">
+        SELECT COUNT(*) FROM review r
+    </select>
+
+    <update id="updateReply">
+        UPDATE review SET reply = #{reply} WHERE id = #{id}
+    </update>
 </mapper>

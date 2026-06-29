@@ -2,17 +2,17 @@ import request from './request';
 import type { Category } from '@/types';
 
 export function getCategories() {
-  return request.get<unknown, Category[]>('/categories');
+  return request.get<unknown, Category[]>('/admin/categories');
 }
 
 export function createCategory(data: Partial<Category>) {
-  return request.post<unknown, Category>('/categories', data);
+  return request.post<unknown, Category>('/admin/categories', data);
 }
 
 export function updateCategory(id: number, data: Partial<Category>) {
-  return request.put<unknown, Category>(`/categories/${id}`, data);
+  return request.put<unknown, Category>(`/admin/categories/${id}`, data);
 }
 
 export function deleteCategory(id: number) {
-  return request.delete<unknown, void>(`/categories/${id}`);
+  return request.delete<unknown, void>(`/admin/categories/${id}`);
 }

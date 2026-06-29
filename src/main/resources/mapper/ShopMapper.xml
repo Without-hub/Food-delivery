@@ -32,4 +32,27 @@
     <select id="selectShopById" resultMap="shopMap">
         SELECT * FROM shop WHERE id = #{shopId}
     </select>
+
+    <!-- 管理员查询全部商家 -->
+    <select id="selectAllShops" resultMap="shopMap">
+        SELECT * FROM shop
+        <where>
+            <if test="name != null and name != ''">AND shop_name LIKE CONCAT('%', #{name}, '%')</if>
+            <if test="status != null">AND status = #{status}</if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countShops" resultType="int">
+        SELECT COUNT(*) FROM shop
+        <where>
+            <if test="name != null and name != ''">AND shop_name LIKE CONCAT('%', #{name}, '%')</if>
+            <if test="status != null">AND status = #{status}</if>
+        </where>
+    </select>
+
+    <update id="updateShopStatus">
+        UPDATE shop SET status = #{status}, update_time = NOW() WHERE id = #{id}
+    </update>
 </mapper>

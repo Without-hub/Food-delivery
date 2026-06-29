@@ -30,21 +30,7 @@ export default function DeliveryPage() {
       setData(result.list);
       setTotal(result.total);
     } catch {
-      const mockData: Delivery[] = Array.from({ length: 12 }, (_, i) => ({
-        id: i + 1,
-        orderId: 1000 + i,
-        orderNo: `ORD${Date.now()}${i}`,
-        riderId: i < 8 ? 300 + (i % 3) : undefined,
-        riderName: i < 8 ? ['张骑手', '李骑手', '王骑手'][i % 3] : undefined,
-        riderPhone: i < 8 ? `1380000${300 + (i % 3)}` : undefined,
-        status: (i % 4) as 0 | 1 | 2 | 3,
-        pickupAddress: `商家${(i % 5) + 1}地址`,
-        deliveryAddress: `用户${i + 1}的收货地址`,
-        createTime: new Date(Date.now() - i * 3600000).toISOString(),
-        updateTime: new Date().toISOString(),
-      }));
-      setData(mockData);
-      setTotal(36);
+      message.error('获取配送列表失败');
     } finally {
       setLoading(false);
     }
@@ -69,11 +55,7 @@ export default function DeliveryPage() {
       const riderList = await getAvailableRiders();
       setRiders(riderList);
     } catch {
-      setRiders([
-        { id: 301, name: '张骑手', phone: '1380000301' },
-        { id: 302, name: '李骑手', phone: '1380000302' },
-        { id: 303, name: '王骑手', phone: '1380000303' },
-      ]);
+      message.error('获取可用骑手列表失败');
     }
     setAssignVisible(true);
   };

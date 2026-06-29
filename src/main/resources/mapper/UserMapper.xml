@@ -23,4 +23,47 @@
         </set>
         WHERE id = #{user.id}
     </update>
+
+    <resultMap id="userMap" type="com.example.fooddelivery.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="role" property="role"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectAllUsers" resultMap="userMap">
+        SELECT * FROM user
+        <where>
+            <if test="username != null and username != ''">AND username LIKE CONCAT('%', #{username}, '%')</if>
+            <if test="role != null">AND role = #{role}</if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countUsers" resultType="int">
+        SELECT COUNT(*) FROM user
+        <where>
+            <if test="username != null and username != ''">AND username LIKE CONCAT('%', #{username}, '%')</if>
+            <if test="role != null">AND role = #{role}</if>
+        </where>
+    </select>
+
+    <update id="updateUserStatus">
+        UPDATE user SET status = #{status}, update_time = NOW() WHERE id = #{id}
+    </update>
+
+    <select id="countTodayUsers" resultType="int">
+        SELECT COUNT(*) FROM user WHERE DATE(create_time) = CURDATE()
+    </select>
+
+    <select id="countTotalUsers" resultType="long">
+        SELECT COUNT(*) FROM user
+    </select>
 </mapper>

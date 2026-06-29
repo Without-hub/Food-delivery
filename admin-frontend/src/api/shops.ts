@@ -7,25 +7,25 @@ export interface ShopQueryParams extends PaginationParams {
 }
 
 export function getShops(params: ShopQueryParams) {
-  return request.get<unknown, PaginatedResult<Shop>>('/shops', { params });
+  return request.get<unknown, PaginatedResult<Shop>>('/admin/shops', { params });
 }
 
 export function getShopDetail(id: number) {
-  return request.get<unknown, Shop>(`/shops/${id}`);
+  return request.get<unknown, Shop>(`/admin/shops/${id}`);
 }
 
 export function createShop(data: Partial<Shop>) {
-  return request.post<unknown, Shop>('/shops', data);
+  return request.post<unknown, Shop>('/admin/shops', data);
 }
 
 export function updateShop(id: number, data: Partial<Shop>) {
-  return request.put<unknown, Shop>(`/shops/${id}`, data);
+  return request.put<unknown, Shop>(`/admin/shops/${id}`, data);
 }
 
 export function deleteShop(id: number) {
-  return request.delete<unknown, void>(`/shops/${id}`);
+  return request.delete<unknown, void>(`/admin/shops/${id}`);
 }
 
 export function updateShopStatus(id: number, status: 0 | 1 | 2) {
-  return request.patch<unknown, void>(`/shops/${id}/status`, { status });
+  return request.patch<unknown, void>(`/admin/shops/${id}/status`, { status });
 }

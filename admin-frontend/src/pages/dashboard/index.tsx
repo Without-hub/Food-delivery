@@ -26,41 +26,7 @@ export default function DashboardPage() {
       const data = await getDashboardStats();
       setStats(data);
     } catch {
-      // 使用模拟数据以便演示
-      setStats({
-        todayOrderCount: 128,
-        todayRevenue: 8560.50,
-        todayNewUsers: 35,
-        totalOrders: 15860,
-        totalRevenue: 986520.00,
-        totalUsers: 5280,
-        totalShops: 186,
-        totalDishes: 3520,
-        orderStatusDistribution: [
-          { status: 0, count: 15 },
-          { status: 1, count: 28 },
-          { status: 2, count: 32 },
-          { status: 3, count: 18 },
-          { status: 4, count: 25 },
-          { status: 5, count: 10 },
-        ],
-        dailyRevenue: [
-          { date: '06-16', revenue: 5320 },
-          { date: '06-17', revenue: 6280 },
-          { date: '06-18', revenue: 7560 },
-          { date: '06-19', revenue: 6890 },
-          { date: '06-20', revenue: 8230 },
-          { date: '06-21', revenue: 7980 },
-          { date: '06-22', revenue: 8560 },
-        ],
-        topDishes: [
-          { id: 1, name: '鱼香肉丝', salesCount: 286 },
-          { id: 2, name: '宫保鸡丁', salesCount: 252 },
-          { id: 3, name: '麻婆豆腐', salesCount: 235 },
-          { id: 4, name: '糖醋里脊', salesCount: 218 },
-          { id: 5, name: '水煮鱼', salesCount: 196 },
-        ],
-      });
+      // 接口请求失败，保留 stats 为 null
     } finally {
       setLoading(false);
     }

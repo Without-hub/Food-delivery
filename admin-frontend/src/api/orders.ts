@@ -10,23 +10,23 @@ export interface OrderQueryParams extends PaginationParams {
 }
 
 export function getOrders(params: OrderQueryParams) {
-  return request.get<unknown, PaginatedResult<Order>>('/orders', { params });
+  return request.get<unknown, PaginatedResult<Order>>('/admin/orders', { params });
 }
 
 export function getOrderDetail(id: number) {
-  return request.get<unknown, Order>(`/orders/${id}`);
+  return request.get<unknown, Order>(`/admin/orders/${id}`);
 }
 
 export function updateOrderStatus(id: number, status: OrderStatus) {
-  return request.put<unknown, void>(`/orders/${id}/status`, null, {
+  return request.put<unknown, void>(`/admin/orders/${id}/status`, null, {
     params: { status },
   });
 }
 
 export function cancelOrder(id: number) {
-  return request.put<unknown, void>(`/orders/${id}/cancel`);
+  return request.put<unknown, void>(`/admin/orders/${id}/cancel`);
 }
 
 export function deleteOrder(id: number) {
-  return request.delete<unknown, void>(`/orders/${id}`);
+  return request.delete<unknown, void>(`/admin/orders/${id}`);
 }

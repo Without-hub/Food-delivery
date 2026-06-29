@@ -28,26 +28,7 @@ export default function ReviewsPage() {
       setData(result.list);
       setTotal(result.total);
     } catch {
-      const mockData: Review[] = Array.from({ length: 12 }, (_, i) => ({
-        id: i + 1,
-        userId: 100 + i,
-        userName: `用户${i + 1}`,
-        orderId: 1000 + i,
-        shopId: 200 + (i % 5),
-        shopName: `商家${(i % 5) + 1}`,
-        dishId: i + 1,
-        dishName: ['鱼香肉丝', '宫保鸡丁', '麻婆豆腐', '糖醋里脊', '水煮鱼'][i % 5],
-        rating: 3 + Math.round(Math.random() * 2),
-        content: ['味道很好，推荐！', '一般般，有点咸', '配送很快，好评', '价格实惠', '分量有点少'][i % 5],
-        images: [],
-        replyContent: i % 3 === 0 ? '感谢您的评价！' : undefined,
-        replyTime: i % 3 === 0 ? new Date().toISOString() : undefined,
-        status: i % 5 === 0 ? 0 : 1,
-        createTime: new Date(Date.now() - i * 86400000).toISOString(),
-        updateTime: new Date().toISOString(),
-      }));
-      setData(mockData);
-      setTotal(36);
+      message.error('获取评价列表失败');
     } finally {
       setLoading(false);
     }

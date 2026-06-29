@@ -12,4 +12,10 @@ public interface ShopMapper {
                                     @Param("offset") Integer offset,
                                     @Param("pageSize") Integer pageSize);
     Shop selectShopById(@Param("shopId") Long shopId);
+
+    List<Shop> selectAllShops(@Param("name") String name, @Param("status") Integer status, @Param("offset") int offset, @Param("pageSize") int pageSize);
+
+    int countShops(@Param("name") String name, @Param("status") Integer status);
+
+    int updateShopStatus(@Param("id") Long id, @Param("status") Integer status);
 }

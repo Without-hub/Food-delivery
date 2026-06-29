@@ -22,29 +22,7 @@ export default function OrderDetailPage() {
       const data = await getOrderDetail(Number(id));
       setOrder(data);
     } catch {
-      // 模拟数据
-      setOrder({
-        id: Number(id),
-        orderNo: `ORD${Date.now()}${id}`,
-        userId: 101,
-        userName: '张三',
-        shopId: 201,
-        shopName: '老王快餐',
-        totalAmount: 58.50,
-        deliveryFee: 5,
-        paymentMethod: 'alipay',
-        status: 1,
-        addressId: 301,
-        deliveryAddress: '北京市朝阳区建国路88号SOHO现代城A座1508',
-        remark: '少放辣，多加葱',
-        orderItems: [
-          { id: 1, orderId: Number(id), dishId: 1, dishName: '鱼香肉丝', dishImage: '', price: 28, quantity: 1, subtotal: 28 },
-          { id: 2, orderId: Number(id), dishId: 2, dishName: '米饭', dishImage: '', price: 3, quantity: 2, subtotal: 6 },
-          { id: 3, orderId: Number(id), dishId: 3, dishName: '紫菜蛋花汤', dishImage: '', price: 12, quantity: 1, subtotal: 12 },
-        ],
-        createTime: new Date(Date.now() - 3600000).toISOString(),
-        updateTime: new Date().toISOString(),
-      });
+      // 接口请求失败，保持 order 为 null
     } finally {
       setLoading(false);
     }

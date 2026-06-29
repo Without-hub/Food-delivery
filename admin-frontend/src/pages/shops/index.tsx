@@ -27,28 +27,7 @@ export default function ShopsPage() {
       setData(result.list);
       setTotal(result.total);
     } catch {
-      const mockData: Shop[] = Array.from({ length: 10 }, (_, i) => ({
-        id: i + 1,
-        name: ['老王快餐', '川味轩', '湘菜馆', '粤港茶餐厅', '东北饺子王', '兰州拉面', '沙县小吃', '黄焖鸡米饭', '海底捞', '肯德基'][i],
-        description: '美味餐厅',
-        phone: `1380000${String(1000 + i).slice(1)}`,
-        address: `北京市朝阳区街道${i + 1}号`,
-        latitude: 39.9,
-        longitude: 116.4,
-        image: '',
-        status: i % 6 === 0 ? 0 : i % 5 === 0 ? 2 : 1,
-        rating: 3.5 + Math.random() * 1.5,
-        salesCount: 100 + Math.floor(Math.random() * 900),
-        deliveryFee: i % 3 === 0 ? 0 : 5,
-        minOrderAmount: 20,
-        openingTime: '08:00',
-        closingTime: '22:00',
-        categoryId: (i % 4) + 1,
-        createTime: new Date().toISOString(),
-        updateTime: new Date().toISOString(),
-      }));
-      setData(mockData);
-      setTotal(28);
+      message.error('获取商家列表失败');
     } finally {
       setLoading(false);
     }

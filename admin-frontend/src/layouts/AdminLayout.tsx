@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Layout, Menu, Button, Dropdown, Avatar, theme } from 'antd';
 import {
@@ -37,8 +37,14 @@ export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { userInfo, logout } = useAuthStore();
+  const { isLoggedIn, userInfo, logout } = useAuthStore();
   const { token: themeToken } = theme.useToken();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/login', { replace: true });
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleMenuClick = ({ key }: { key: string }) => {
     navigate(key);
