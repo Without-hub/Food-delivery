@@ -6,13 +6,17 @@ import com.example.fooddelivery.mapper.CartMapper;
 import com.example.fooddelivery.service.CartService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import jakarta.annotation.Resource;
+
 import java.util.List;
 
 @Service
 public class CartServiceImpl implements CartService {
-    @Resource
-    private CartMapper cartMapper;
+
+    private final CartMapper cartMapper;
+
+    public CartServiceImpl(CartMapper cartMapper) {
+        this.cartMapper = cartMapper;
+    }
 
     @Override
     @Transactional

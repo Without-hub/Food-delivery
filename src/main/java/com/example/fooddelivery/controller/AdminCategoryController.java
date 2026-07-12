@@ -3,10 +3,9 @@ package com.example.fooddelivery.controller;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.entity.Category;
 import com.example.fooddelivery.mapper.CategoryMapper;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,14 +14,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/admin/categories")
 public class AdminCategoryController {
 
-    @Resource
-    private CategoryMapper categoryMapper;
+    private final CategoryMapper categoryMapper;
+
+    public AdminCategoryController(CategoryMapper categoryMapper) {
+        this.categoryMapper = categoryMapper;
+    }
 
     @GetMapping
     public Result<List<Map<String, Object>>> list() {
         List<Category> categories = categoryMapper.selectAll();
         List<Map<String, Object>> result = categories.stream().map(c -> {
-            Map<String, Object> m = new java.util.HashMap<>();
+            Map<String, Object> m = new HashMap<>();
             m.put("id", c.getId());
             m.put("name", c.getName());
             m.put("sort", c.getSortOrder());

@@ -17,6 +17,7 @@ CREATE TABLE `user` (
     `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '用户ID',
     `username`    VARCHAR(50)  NOT NULL                COMMENT '用户名',
     `password`    VARCHAR(100) NOT NULL                COMMENT '密码',
+    `nickname`    VARCHAR(50)  DEFAULT NULL             COMMENT '昵称',
     `phone`       VARCHAR(20)  DEFAULT NULL             COMMENT '手机号',
     `email`       VARCHAR(100) DEFAULT NULL             COMMENT '邮箱',
     `avatar`      VARCHAR(255) DEFAULT NULL             COMMENT '头像URL',

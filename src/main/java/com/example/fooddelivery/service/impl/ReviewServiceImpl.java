@@ -3,7 +3,6 @@ package com.example.fooddelivery.service.impl;
 import com.example.fooddelivery.entity.Review;
 import com.example.fooddelivery.mapper.ReviewMapper;
 import com.example.fooddelivery.service.ReviewService;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,8 +10,12 @@ import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
-    @Resource
-    private ReviewMapper reviewMapper;
+
+    private final ReviewMapper reviewMapper;
+
+    public ReviewServiceImpl(ReviewMapper reviewMapper) {
+        this.reviewMapper = reviewMapper;
+    }
 
     @Override
     @Transactional

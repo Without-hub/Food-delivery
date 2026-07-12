@@ -1,5 +1,6 @@
 package com.example.fooddelivery.controller;
 
+import com.example.fooddelivery.config.SecurityUtil;
 import com.example.fooddelivery.dto.OrderDTO;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.service.OrderService;
@@ -20,8 +21,7 @@ public class OrderController {
     /** 提交订单 */
     @PostMapping
     public Result<OrderDTO> createOrder(@RequestBody OrderDTO request) {
-        // 暂时硬编码 userId=1，后续接入登录后从 Session 获取
-        Long userId = 1L;
+        Long userId = SecurityUtil.getCurrentUserId();
         OrderDTO order = orderService.createOrder(userId, request.getAddressId(), request.getRemark());
         return Result.ok(order);
     }
@@ -29,7 +29,7 @@ public class OrderController {
     /** 订单列表 */
     @GetMapping
     public Result<List<OrderDTO>> listOrders(@RequestParam(required = false) Integer status) {
-        Long userId = 1L;
+        Long userId = SecurityUtil.getCurrentUserId();
         List<OrderDTO> orders = orderService.listOrders(userId, status);
         return Result.ok(orders);
     }
@@ -44,7 +44,7 @@ public class OrderController {
     /** 取消订单 */
     @PutMapping("/{id}/cancel")
     public Result<Void> cancelOrder(@PathVariable Long id) {
-        Long userId = 1L;
+        Long userId = SecurityUtil.getCurrentUserId();
         orderService.cancelOrder(id, userId);
         return Result.ok();
     }

@@ -102,6 +102,14 @@
         </where>
     </select>
 
+    <select id="selectAdminOrderById" resultMap="orderWithUserMap">
+        SELECT o.*, s.name AS shopName, u.username AS userName
+        FROM `order` o
+        LEFT JOIN shop s ON o.shop_id = s.id
+        LEFT JOIN user u ON o.user_id = u.id
+        WHERE o.id = #{id}
+    </select>
+
     <delete id="deleteById">
         DELETE FROM `order` WHERE id = #{id}
     </delete>

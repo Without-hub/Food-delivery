@@ -4,7 +4,6 @@ import com.example.fooddelivery.dto.AdminOrderVO;
 import com.example.fooddelivery.dto.PageResult;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.mapper.OrderMapper;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @RequestMapping("/api/admin/orders")
 public class AdminOrderController {
 
-    @Resource
-    private OrderMapper orderMapper;
+    private final OrderMapper orderMapper;
+
+    public AdminOrderController(OrderMapper orderMapper) {
+        this.orderMapper = orderMapper;
+    }
 
     @GetMapping
     public Result<PageResult<AdminOrderVO>> list(
@@ -30,8 +32,7 @@ public class AdminOrderController {
 
     @GetMapping("/{id}")
     public Result<AdminOrderVO> detail(@PathVariable Long id) {
-        List<AdminOrderVO> list = orderMapper.selectAdminOrders(null, null, 0, 10000);
-        AdminOrderVO order = list.stream().filter(o -> o.getId().equals(id)).findFirst().orElse(null);
+        AdminOrderVO order = orderMapper.selectAdminOrderById(id);
         return Result.ok(order);
     }
 

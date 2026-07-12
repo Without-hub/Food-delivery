@@ -26,6 +26,8 @@ public interface OrderMapper {
 
     int countAdminOrders(@Param("status") Integer status, @Param("orderNo") String orderNo);
 
+    AdminOrderVO selectAdminOrderById(@Param("id") Long id);
+
     int deleteById(@Param("id") Long id);
 
     int countTodayOrders();

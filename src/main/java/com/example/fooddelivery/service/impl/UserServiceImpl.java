@@ -1,18 +1,26 @@
 package com.example.fooddelivery.service.impl;
 
+import com.example.fooddelivery.config.JwtUtil;
 import com.example.fooddelivery.dto.UserLoginDTO;
 import com.example.fooddelivery.dto.UserRegisterDTO;
 import com.example.fooddelivery.entity.User;
 import com.example.fooddelivery.mapper.UserMapper;
 import com.example.fooddelivery.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Resource
-    private UserMapper userMapper;
+
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    public UserServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     public String register(UserRegisterDTO dto) {
@@ -22,9 +30,12 @@ public class UserServiceImpl implements UserService {
         }
         User user = new User();
         user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setPhone(dto.getPhone());
-        user.setEmail(dto.getNickname());
+        // 修复 Bug：nickname 字段应存 nickname，而不是 email
+        // User 实体无 nickname 字段，使用 dto.getNickname() 作为昵称，存到 email 字段作为备用
+        // 更合理的做法是给 User 实体增加 nickname 字段，后续优化
+        user.setNickname(dto.getNickname());
         userMapper.insert(user);
         return "注册成功";
     }
@@ -32,11 +43,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(UserLoginDTO dto) {
         User user = userMapper.selectByUsername(dto.getUsername());
-        if (user == null || !user.getPassword().equals(dto.getPassword())) {
+        if (user == null || !passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("用户名或密码错误");
         }
-        // 简易Token，后续可升级JWT
-        return UUID.randomUUID().toString().replace("-", "");
+        // 生成 JWT Token
+        return jwtUtil.generateToken(user.getId(), user.getRole());
     }
 
     @Override
@@ -48,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long userId, UserRegisterDTO dto) {
         User user = new User();
         user.setId(userId);
-        user.setEmail(dto.getNickname());
+        user.setNickname(dto.getNickname());
         user.setPhone(dto.getPhone());
         userMapper.updateById(user);
     }

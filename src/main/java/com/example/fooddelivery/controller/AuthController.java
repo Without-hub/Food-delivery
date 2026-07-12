@@ -1,11 +1,11 @@
 package com.example.fooddelivery.controller;
 
+import com.example.fooddelivery.config.SecurityUtil;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.dto.UserLoginDTO;
 import com.example.fooddelivery.entity.User;
 import com.example.fooddelivery.mapper.UserMapper;
 import com.example.fooddelivery.service.UserService;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -15,16 +15,17 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Resource
-    private UserService userService;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
-    @Resource
-    private UserMapper userMapper;
+    public AuthController(UserService userService, UserMapper userMapper) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+    }
 
     @PostMapping("/login")
     public Result<Map<String, Object>> login(@RequestBody UserLoginDTO dto) {
         String token = userService.login(dto);
-        // Find user by username to return userInfo
         User user = userMapper.selectByUsername(dto.getUsername());
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("token", token);
@@ -33,8 +34,9 @@ public class AuthController {
     }
 
     @GetMapping("/current-user")
-    public Result<User> currentUser(@RequestHeader("userId") String userId) {
-        User user = userMapper.selectById(Long.valueOf(userId));
+    public Result<User> currentUser() {
+        Long userId = SecurityUtil.getCurrentUserId();
+        User user = userMapper.selectById(userId);
         return Result.ok(user);
     }
 }

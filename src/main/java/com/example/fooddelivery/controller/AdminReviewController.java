@@ -4,7 +4,6 @@ import com.example.fooddelivery.dto.AdminReviewVO;
 import com.example.fooddelivery.dto.PageResult;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.mapper.ReviewMapper;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.Map;
 @RequestMapping("/api/admin/reviews")
 public class AdminReviewController {
 
-    @Resource
-    private ReviewMapper reviewMapper;
+    private final ReviewMapper reviewMapper;
+
+    public AdminReviewController(ReviewMapper reviewMapper) {
+        this.reviewMapper = reviewMapper;
+    }
 
     @GetMapping
     public Result<PageResult<AdminReviewVO>> list(

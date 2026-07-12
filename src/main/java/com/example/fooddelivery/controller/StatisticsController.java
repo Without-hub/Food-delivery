@@ -5,7 +5,6 @@ import com.example.fooddelivery.mapper.DishMapper;
 import com.example.fooddelivery.mapper.OrderMapper;
 import com.example.fooddelivery.mapper.ShopMapper;
 import com.example.fooddelivery.mapper.UserMapper;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,14 +15,18 @@ import java.util.*;
 @RequestMapping("/api/admin/statistics")
 public class StatisticsController {
 
-    @Resource
-    private OrderMapper orderMapper;
-    @Resource
-    private UserMapper userMapper;
-    @Resource
-    private ShopMapper shopMapper;
-    @Resource
-    private DishMapper dishMapper;
+    private final OrderMapper orderMapper;
+    private final UserMapper userMapper;
+    private final ShopMapper shopMapper;
+    private final DishMapper dishMapper;
+
+    public StatisticsController(OrderMapper orderMapper, UserMapper userMapper,
+                                ShopMapper shopMapper, DishMapper dishMapper) {
+        this.orderMapper = orderMapper;
+        this.userMapper = userMapper;
+        this.shopMapper = shopMapper;
+        this.dishMapper = dishMapper;
+    }
 
     @GetMapping("/summary")
     public Result<Map<String, Object>> summary() {
@@ -44,6 +47,7 @@ public class StatisticsController {
             Map<String, Object> item = new LinkedHashMap<>();
             item.put("date", m.get("date") != null ? m.get("date").toString().substring(5) : "");
             item.put("revenue", m.get("revenue"));
+            // 补充当日订单数（可后续优化为更精确的查询）
             item.put("orderCount", 0);
             result.add(item);
         }

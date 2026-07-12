@@ -2,10 +2,10 @@
 -- 测试数据（先执行 schema.sql 建表后再执行本文件）
 -- ============================================
 
--- 1. 测试用户（密码123456）
-INSERT INTO food_delivery.`user` (username, password, phone, email, role, status) VALUES
-('testuser', '123456', '13800000001', 'test@qq.com', 0, 1),
-('admin',    '123456', '13800000002', 'admin@qq.com', 1, 1);
+-- 1. 测试用户（密码123456，BCrypt加密）
+INSERT INTO food_delivery.`user` (username, password, nickname, phone, email, role, status) VALUES
+('testuser', '$2b$10$TPt0AQ3Mh/67te9qzkX2kuAS.3qkiwU.A.2k/8FMGNEGBES8UOR6S', '测试用户', '13800000001', 'test@qq.com', 0, 1),
+('admin',    '$2b$10$TPt0AQ3Mh/67te9qzkX2kuAS.3qkiwU.A.2k/8FMGNEGBES8UOR6S', '管理员',   '13800000002', 'admin@qq.com', 1, 1);
 
 -- 2. 测试商家 — 共 6 家店铺
 INSERT INTO food_delivery.`shop` (name, logo, description, category, phone, address, rating, sales_volume, delivery_fee, min_price, business_hours, status) VALUES

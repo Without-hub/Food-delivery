@@ -4,7 +4,6 @@ import com.example.fooddelivery.dto.PageResult;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.entity.Shop;
 import com.example.fooddelivery.mapper.ShopMapper;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @RequestMapping("/api/admin/shops")
 public class AdminShopController {
 
-    @Resource
-    private ShopMapper shopMapper;
+    private final ShopMapper shopMapper;
+
+    public AdminShopController(ShopMapper shopMapper) {
+        this.shopMapper = shopMapper;
+    }
 
     @GetMapping
     public Result<PageResult<Shop>> list(

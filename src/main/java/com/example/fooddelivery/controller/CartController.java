@@ -1,26 +1,31 @@
 package com.example.fooddelivery.controller;
 
+import com.example.fooddelivery.config.SecurityUtil;
 import com.example.fooddelivery.dto.CartDTO;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.service.CartService;
 import org.springframework.web.bind.annotation.*;
-import jakarta.annotation.Resource;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
 public class CartController {
-    @Resource
-    private CartService cartService;
+
+    private final CartService cartService;
+
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     @PostMapping("/add")
-    public Result<String> add(@RequestParam Long userId,
-                              @RequestParam Long dishId,
+    public Result<String> add(@RequestParam Long dishId,
                               @RequestParam Long shopId,
                               @RequestParam Integer quantity) {
         if (quantity == null || quantity <= 0) {
             return Result.fail("数量必须大于0");
         }
+        Long userId = SecurityUtil.getCurrentUserId();
         cartService.addCart(userId, dishId, shopId, quantity);
         return Result.ok("添加成功");
     }
@@ -41,13 +46,15 @@ public class CartController {
     }
 
     @DeleteMapping("/clear")
-    public Result<String> clear(@RequestParam Long userId) {
+    public Result<String> clear() {
+        Long userId = SecurityUtil.getCurrentUserId();
         cartService.clearCart(userId);
         return Result.ok("已清空");
     }
 
     @GetMapping("/list")
-    public Result<List<CartDTO>> list(@RequestParam Long userId) {
+    public Result<List<CartDTO>> list() {
+        Long userId = SecurityUtil.getCurrentUserId();
         return Result.ok(cartService.getUserCartWithDish(userId));
     }
 }

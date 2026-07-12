@@ -5,13 +5,17 @@ import com.example.fooddelivery.entity.Address;
 import com.example.fooddelivery.mapper.AddressMapper;
 import com.example.fooddelivery.service.AddressService;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+
 import java.util.List;
 
 @Service
 public class AddressServiceImpl implements AddressService {
-    @Resource
-    private AddressMapper addressMapper;
+
+    private final AddressMapper addressMapper;
+
+    public AddressServiceImpl(AddressMapper addressMapper) {
+        this.addressMapper = addressMapper;
+    }
 
     @Override
     public void addAddress(AddressDTO dto, Long userId) {

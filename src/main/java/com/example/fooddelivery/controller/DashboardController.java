@@ -5,7 +5,6 @@ import com.example.fooddelivery.mapper.DishMapper;
 import com.example.fooddelivery.mapper.OrderMapper;
 import com.example.fooddelivery.mapper.ShopMapper;
 import com.example.fooddelivery.mapper.UserMapper;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,14 +16,18 @@ import java.util.*;
 @RequestMapping("/api/admin/dashboard")
 public class DashboardController {
 
-    @Resource
-    private OrderMapper orderMapper;
-    @Resource
-    private UserMapper userMapper;
-    @Resource
-    private ShopMapper shopMapper;
-    @Resource
-    private DishMapper dishMapper;
+    private final OrderMapper orderMapper;
+    private final UserMapper userMapper;
+    private final ShopMapper shopMapper;
+    private final DishMapper dishMapper;
+
+    public DashboardController(OrderMapper orderMapper, UserMapper userMapper,
+                               ShopMapper shopMapper, DishMapper dishMapper) {
+        this.orderMapper = orderMapper;
+        this.userMapper = userMapper;
+        this.shopMapper = shopMapper;
+        this.dishMapper = dishMapper;
+    }
 
     @GetMapping("/stats")
     public Result<Map<String, Object>> stats() {

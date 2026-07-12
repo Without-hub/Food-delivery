@@ -4,7 +4,6 @@ import com.example.fooddelivery.dto.PageResult;
 import com.example.fooddelivery.dto.Result;
 import com.example.fooddelivery.entity.User;
 import com.example.fooddelivery.mapper.UserMapper;
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @RequestMapping("/api/admin/users")
 public class AdminUserController {
 
-    @Resource
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    public AdminUserController(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @GetMapping
     public Result<PageResult<User>> list(

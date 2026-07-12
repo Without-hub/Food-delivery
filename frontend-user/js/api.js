@@ -40,6 +40,9 @@ const Api = {
     register(data) {
         return request({ url: "/user/register", method: "POST", data })
     },
+    getUserInfo() {
+        return request({ url: "/user/info" })
+    },
 
     // ========== 商家 ==========
     getShopList() {
