@@ -95,6 +95,18 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <!-- 构建时将 frontend-user 资源复制到 static -->
+            <resource>
+                <directory>frontend-user</directory>
+                <targetPath>${project.build.outputDirectory}/static</targetPath>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

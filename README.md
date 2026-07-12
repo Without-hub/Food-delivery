@@ -237,6 +237,10 @@ npm run dev
 | | 🧪 添加核心服务 JUnit 5 单元测试 |
 | | 📦 所有 Entity/DTO 改用 Lombok @Data 简化 |
 | | 🔧 统一构造器注入、修复 javax/jakarta 包混用 |
+| | 🖼️ 18 张美食图片压缩（Sharp，平均省 50%+） |
+| | 📋 Spring Profile 配置（dev/prod 环境分离） |
+| | 🔢 雪花算法替换 UUID 订单号，避免冲突 |
+| | 🔄 Maven 构建时自动复制前端资源到 static |
 
 ---
 

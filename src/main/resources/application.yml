@@ -2,24 +2,10 @@ server:
   port: 8080
 
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/food_delivery?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
-    username: root
-    password: Wzh123456
+  profiles:
+    active: dev  # 默认使用 dev 环境；生产环境请改为 prod
 
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.fooddelivery.entity
-  configuration:
-    map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-# JWT 配置
 jwt:
-  secret: food-delivery-secret-key-2024-spring-course-project-weizihao
-  expiration: 86400000
-
-logging:
-  level:
-    com.example.fooddelivery: debug
+  # 生产环境请通过 JWT_SECRET 环境变量覆盖
+  secret: food**************************
+  expiration: 86400000  # 24小时（毫秒）

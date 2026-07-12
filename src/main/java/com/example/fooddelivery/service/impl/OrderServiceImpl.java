@@ -1,5 +1,6 @@
 package com.example.fooddelivery.service.impl;
 
+import com.example.fooddelivery.config.SnowflakeIdGenerator;
 import com.example.fooddelivery.dto.OrderDTO;
 import com.example.fooddelivery.dto.OrderItemDTO;
 import com.example.fooddelivery.entity.*;
@@ -9,12 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,16 +24,18 @@ public class OrderServiceImpl implements OrderService {
     private final DishMapper dishMapper;
     private final AddressMapper addressMapper;
     private final ReviewMapper reviewMapper;
+    private final SnowflakeIdGenerator idGenerator;
 
     public OrderServiceImpl(OrderMapper orderMapper, OrderItemMapper orderItemMapper,
                             CartMapper cartMapper, DishMapper dishMapper, AddressMapper addressMapper,
-                            ReviewMapper reviewMapper) {
+                            ReviewMapper reviewMapper, SnowflakeIdGenerator idGenerator) {
         this.orderMapper = orderMapper;
         this.orderItemMapper = orderItemMapper;
         this.cartMapper = cartMapper;
         this.dishMapper = dishMapper;
         this.addressMapper = addressMapper;
         this.reviewMapper = reviewMapper;
+        this.idGenerator = idGenerator;
     }
 
     @Override
@@ -72,9 +72,8 @@ public class OrderServiceImpl implements OrderService {
 
         BigDecimal totalPrice = itemsTotal.add(deliveryFee);
 
-        // 4. 生成订单编号
-        String orderNo = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        // 4. 生成订单编号（雪花算法，分布式唯一）
+        String orderNo = idGenerator.nextOrderNo();
 
         // 5. 创建订单
         Order order = new Order();
