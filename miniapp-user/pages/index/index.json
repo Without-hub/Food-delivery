@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "外卖点餐",
+  "usingComponents": {
+    "shop-card": "../../components/shop-card/shop-card"
+  }
+}

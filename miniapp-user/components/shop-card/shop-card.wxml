@@ -1,0 +1,14 @@
+<view class="shop-card" bindtap="onTap">
+  <image class="shop-logo" src="../../images/tab-home-active.png"></image>
+  <view class="shop-info">
+    <view class="shop-name">{{shop.name}}</view>
+    <view class="shop-meta">
+      <text class="rating">⭐ {{shop.rating || 4.5}}</text>
+      <text class="sales">月售{{shop.salesVolume || 0}}</text>
+    </view>
+    <view class="shop-tags">
+      <text class="tag tag-primary">配送费¥{{shop.deliveryFee || 0}}</text>
+      <text class="tag tag-primary">起送¥{{shop.minPrice || 0}}</text>
+    </view>
+  </view>
+</view>

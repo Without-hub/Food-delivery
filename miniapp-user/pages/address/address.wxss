@@ -1,0 +1,9 @@
+.address-item { display: flex; justify-content: space-between; align-items: center; background: #fff; margin: 12rpx 20rpx; padding: 24rpx; border-radius: 12rpx; }
+.addr-info { flex: 1; }
+.addr-name { font-size: 28rpx; font-weight: bold; display: block; }
+.addr-detail { font-size: 24rpx; color: #666; margin-top: 6rpx; display: block; }
+.addr-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8rpx; }
+.default-tag { font-size: 22rpx; color: #ff6b35; background: #fff3ed; padding: 4rpx 12rpx; border-radius: 8rpx; }
+.set-default { font-size: 22rpx; color: #999; }
+.delete-addr { font-size: 22rpx; color: #ff3b30; }
+.add-btn-area { padding: 40rpx 30rpx; }

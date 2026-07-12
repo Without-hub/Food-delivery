@@ -1,0 +1,38 @@
+<scroll-view class="page" scroll-y bindscrolltolower="onReachBottom">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索商家或菜品" bindinput="onSearchInput" value="{{keyword}}"/>
+  </view>
+
+  <!-- Banner -->
+  <swiper class="banner" indicator-dots autoplay interval="4000" circular>
+    <swiper-item wx:for="{{banners}}" wx:key="*this">
+      <image class="banner-img" src="{{item}}"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 分类导航 -->
+  <scroll-view class="categories" scroll-x>
+    <view class="category-item {{activeCategoryId===item.id?'active':''}}" wx:for="{{categories}}" wx:key="id" data-id="{{item.id}}" bindtap="onCategoryTap">
+      <text class="category-icon">{{item.icon || '🍽'}}</text>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 商家列表 -->
+  <view class="shop-list">
+    <view class="section-title">附近好店</view>
+    <shop-card wx:for="{{shops}}" wx:key="id" shop="{{item}}" bind:tap="onShopTap" data-id="{{item.id}}"/>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{shops.length===0}}" class="empty-container">
+    <text>暂无商家信息</text>
+  </view>
+</scroll-view>
+
+<!-- 浮动购物车 -->
+<view class="cart-float" bindtap="goCart" wx:if="{{cartCount>0}}">
+  <text class="cart-badge">{{cartCount}}</text>
+  <text class="cart-icon">🛒</text>
+</view>

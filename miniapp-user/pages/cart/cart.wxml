@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="card" wx:if="{{cartItems.length>0}}">
+    <view class="cart-header"><text>购物车 ({{cartItems.length}})</text><text class="clear-btn" bindtap="clearCart">清空</text></view>
+    <view class="cart-item" wx:for="{{cartItems}}" wx:key="id">
+      <image class="item-img" src="../../images/tab-home-active.png"></image>
+      <view class="item-info">
+        <text class="item-name">{{item.dishName}}</text>
+        <text class="item-price">¥{{formatPrice(item.price)}}</text>
+      </view>
+      <view class="qty-control">
+        <text class="qty-btn" data-id="{{item.id}}" data-delta="{{-1}}" bindtap="onQtyChange">−</text>
+        <text class="qty-num">{{item.quantity}}</text>
+        <text class="qty-btn" data-id="{{item.id}}" data-delta="{{1}}" bindtap="onQtyChange">+</text>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{cartItems.length===0}}" class="empty-container"><text>购物车是空的</text><text style="font-size:24rpx;color:#999;margin-top:16rpx">快去选购美食吧</text></view>
+</view>
+<view class="cart-bar" wx:if="{{cartItems.length>0}}">
+  <text class="bar-total">合计：<text style="color:#ff6b35;font-size:36rpx">¥{{formatPrice(totalPrice)}}</text></text>
+  <view class="bar-submit" bindtap="goOrder">去结算</view>
+</view>

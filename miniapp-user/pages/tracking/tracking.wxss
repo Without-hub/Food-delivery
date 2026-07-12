@@ -1,0 +1,15 @@
+.steps { display: flex; justify-content: space-between; padding: 20rpx 0; position: relative; }
+.step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+.step-dot { width: 24rpx; height: 24rpx; border-radius: 50%; background: #ddd; margin-bottom: 12rpx; z-index: 2; }
+.step.active .step-dot { background: #ff6b35; width: 32rpx; height: 32rpx; }
+.step-text { font-size: 24rpx; color: #999; }
+.step.active .step-text { color: #ff6b35; font-weight: bold; }
+.rider-card { display: flex; align-items: center; justify-content: space-between; }
+.rider-info { display: flex; align-items: center; gap: 16rpx; }
+.rider-avatar { font-size: 64rpx; }
+.rider-detail { display: flex; flex-direction: column; }
+.rider-name { font-size: 30rpx; font-weight: bold; }
+.rider-status { font-size: 24rpx; color: #999; }
+.call-btn { padding: 12rpx 24rpx; background: #fff3ed; border-radius: 24rpx; font-size: 24rpx; color: #ff6b35; }
+.map-placeholder { height: 300rpx; display: flex; align-items: center; justify-content: center; background: #f9f9f9; color: #999; font-size: 28rpx; border-radius: 12rpx; }
+.info-row { display: flex; justify-content: space-between; padding: 10rpx 0; font-size: 26rpx; color: #666; }

@@ -1,0 +1,28 @@
+<view class="page">
+  <!-- 状态 Tab -->
+  <scroll-view scroll-x class="tabs">
+    <view class="tab-item {{activeTab===index?'active':''}}" wx:for="{{tabs}}" wx:key="*this" data-index="{{index}}" bindtap="onTabTap">{{item}}</view>
+  </scroll-view>
+
+  <!-- 订单列表 -->
+  <view wx:for="{{orders}}" wx:key="id" class="order-card card" bindtap="goDetail" data-id="{{item.id}}">
+    <view class="order-header">
+      <text class="order-shop">{{item.shopName || '店铺'}}</text>
+      <text class="order-status {{getOrderStatusClass(item.status)}}">{{getOrderStatusText(item.status)}}</text>
+    </view>
+    <view class="order-body">
+      <view class="order-items">
+        <image wx:for="{{item.items?.slice(0,4)}}" wx:key="dishId" class="order-img" src="../../images/tab-home-active.png"></image>
+      </view>
+    </view>
+    <view class="order-footer">
+      <text class="order-time">{{formatTime(item.createTime)}}</text>
+      <text class="order-total">¥{{formatPrice(item.totalPrice)}}</text>
+    </view>
+    <view class="order-actions" wx:if="{{item.status===0}}">
+      <view class="action-btn cancel" bindtap="cancelOrder" data-id="{{item.id}}">取消订单</view>
+    </view>
+  </view>
+
+  <view wx:if="{{orders.length===0}}" class="empty-container"><text>暂无订单</text></view>
+</view>

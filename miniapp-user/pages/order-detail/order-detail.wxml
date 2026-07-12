@@ -1,0 +1,49 @@
+<scroll-view class="page" scroll-y wx:if="{{order}}">
+  <!-- 状态 -->
+  <view class="status-bar {{getOrderStatusClass(order.status)}}">
+    <text class="status-text">{{getOrderStatusText(order.status)}}</text>
+    <text class="status-sub">订单号：{{order.orderNo}}</text>
+    <text class="status-sub">{{formatTime(order.createTime)}}</text>
+  </view>
+
+  <!-- 地址 -->
+  <view class="card"><text class="addr-name">{{order.contactName || '收货人'}} {{order.contactPhone || ''}}</text><text class="addr-detail">{{order.addressDetail || '地址信息'}}</text></view>
+
+  <!-- 菜品 -->
+  <view class="card">
+    <view class="order-item" wx:for="{{order.items}}" wx:key="dishId">
+      <image class="oi-img" src="../../images/tab-home-active.png"></image>
+      <text class="oi-name">{{item.dishName}}</text>
+      <text class="oi-qty">×{{item.quantity}}</text>
+      <text class="oi-price">¥{{formatPrice(item.subtotal)}}</text>
+    </view>
+  </view>
+
+  <!-- 价格明细 -->
+  <view class="card">
+    <view class="price-row"><text>商品金额</text><text>¥{{formatPrice(order.totalPrice - order.deliveryFee)}}</text></view>
+    <view class="price-row"><text>配送费</text><text>¥{{formatPrice(order.deliveryFee)}}</text></view>
+    <view class="price-row total"><text>实付金额</text><text>¥{{formatPrice(order.totalPrice)}}</text></view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-bar">
+    <view wx:if="{{order.status===0}}" class="action-btn-outline" bindtap="cancelOrder">取消订单</view>
+    <view wx:if="{{order.status===2}}" class="action-btn-primary" bindtap="goTracking">查看配送</view>
+    <view wx:if="{{order.status===3 && !order.hasReview}}" class="action-btn-primary" bindtap="showReview">去评价</view>
+  </view>
+</scroll-view>
+
+<!-- 评价弹窗 -->
+<view class="modal-overlay" wx:if="{{showReviewModal}}" bindtap="hideReviewModal"></view>
+<view class="modal {{showReviewModal?'show':''}}">
+  <view class="modal-title">发表评价</view>
+  <view class="rating-row">
+    <text class="star {{item<=reviewRating?'active':''}}" wx:for="{{[1,2,3,4,5]}}" wx:key="*this" data-rating="{{item}}" bindtap="onRatingTap">★</text>
+  </view>
+  <textarea class="review-input" placeholder="说说你的用餐体验..." bindinput="onReviewInput"></textarea>
+  <view class="modal-actions">
+    <view class="modal-btn cancel" bindtap="hideReviewModal">取消</view>
+    <view class="modal-btn primary" bindtap="submitReview">提交</view>
+  </view>
+</view>

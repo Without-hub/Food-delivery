@@ -1,0 +1,16 @@
+.page { min-height: 100vh; padding-bottom: 120rpx; }
+.address-card { padding: 24rpx; }
+.addr-name { font-size: 30rpx; font-weight: bold; }
+.addr-phone { font-size: 26rpx; color: #666; font-weight: normal; margin-left: 16rpx; }
+.addr-detail { font-size: 26rpx; color: #666; margin-top: 8rpx; display: block; }
+.addr-option { padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; font-size: 26rpx; display: flex; flex-direction: column; gap: 4rpx; }
+.addr-option.active { color: #ff6b35; }
+.order-item { display: flex; align-items: center; padding: 12rpx 0; font-size: 26rpx; }
+.oi-name { flex: 1; }
+.oi-qty { margin-right: 20rpx; color: #999; }
+.oi-price { color: #333; }
+.price-row { display: flex; justify-content: space-between; padding: 12rpx 0; font-size: 26rpx; }
+.price-row.total { border-top: 1rpx solid #f0f0f0; margin-top: 8rpx; padding-top: 20rpx; font-size: 30rpx; font-weight: bold; }
+.submit-bar { position: fixed; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; height: 96rpx; padding: 0 30rpx; background: #fff; border-top: 1rpx solid #eee; }
+.submit-total { font-size: 28rpx; }
+.submit-btn { width: 220rpx; height: 72rpx; line-height: 72rpx; text-align: center; background: #ff6b35; color: #fff; border-radius: 36rpx; font-size: 28rpx; }
