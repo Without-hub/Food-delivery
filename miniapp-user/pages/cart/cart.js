@@ -1,5 +1,7 @@
 const api = require('../../utils/api');
-const { showLoading, hideLoading, formatPrice } = require('../../utils/util');
+const util = require('../../utils/util');
+const { showLoading, hideLoading, formatPrice } = util;
+const imgUrl = util.imgUrl;
 
 Page({
   data: { cartItems: [], totalPrice: 0, allChecked: true, loading: false },
@@ -38,5 +40,5 @@ Page({
     wx.navigateTo({ url: '/pages/order/order' });
   },
 
-  formatPrice
+  imgUrl, formatPrice
 });

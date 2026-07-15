@@ -1,0 +1,43 @@
+# ========================================
+# 部署步骤 — 在 SSH 中按顺序执行
+# ========================================
+
+# 你已经在服务器上了，确认在 /home/ubuntu/deploy 目录：
+pwd
+# 如果不在，先：cd /home/ubuntu/deploy
+
+# ====== 1. 修复数据库初始化 ======
+bash fix-db.sh
+
+# ====== 2. 编译后端源码 ======
+unzip -o food-delivery-source.zip -d source
+cd source
+mvn clean package -DskipTests
+
+# ====== 3. 复制 JAR 并启动服务 ======
+sudo mkdir -p /opt/food-delivery
+sudo cp target/food-delivery-*.jar /opt/food-delivery/food-delivery.jar
+
+sudo bash -c 'cat > /etc/systemd/system/food-delivery.service << EOF
+[Unit]
+Description=Food Delivery API Server
+After=network.target mysql.service
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/food-delivery
+ExecStart=/usr/bin/java -jar /opt/food-delivery/food-delivery.jar --spring.profiles.active=prod
+Restart=always
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
+EOF'
+
+sudo systemctl daemon-reload
+sudo systemctl enable food-delivery
+sudo systemctl restart food-delivery
+
+# ====== 4. 验证 ======
+sleep 5
+curl -s http://localhost:8080/api/shop/list | head -5
+# 如果返回了 JSON 数据，说明部署成功！

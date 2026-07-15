@@ -4,23 +4,21 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/food_delivery?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/food_delivery?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: food_user
+    password: 123456
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.fooddelivery.entity
   configuration:
     map-underscore-to-camel-case: true
-    # 生产环境关闭 SQL 日志（性能 + 安全）
-    # log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:
     com.example.fooddelivery: warn
 
-# JWT 配置（生产环境 — 请务必更换 secret！）
+# JWT 配置（生产环境）
 jwt:
-  secret: ${JWT_SECRET}
+  secret: food***********************************************************************n
   expiration: 86400000  # 24小时

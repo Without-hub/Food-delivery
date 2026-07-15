@@ -143,3 +143,36 @@ page {
 .safe-bottom {
   padding-bottom: env(safe-area-inset-bottom, 20rpx);
 }
+
+/* ====== 数量加减组件 ====== */
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  border: 2rpx solid #ff6b35;
+  border-radius: 28rpx;
+  padding: 2rpx;
+}
+.qty-btn {
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  text-align: center;
+  background: #ff6b35;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.qty-btn.minus {
+  background: #fff;
+  color: #ff6b35;
+  border: 1rpx solid #ff6b35;
+}
+.qty-num {
+  font-size: 28rpx;
+  min-width: 50rpx;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}

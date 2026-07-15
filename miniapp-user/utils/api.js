@@ -1,5 +1,5 @@
 // API 接口定义
-const { get, post, put, del } = require('./request');
+const { get, post, put, del, postQuery, putQuery, delQuery } = require('./request');
 
 module.exports = {
 
@@ -25,26 +25,28 @@ module.exports = {
   getDishDetail: (dishId) =>
     get('/api/dish/detail', { dishId }),
 
-  // ========== 购物车 ==========
+  // ========== 购物车（后端使用 @RequestParam，需传 Query 参数） ==========
   getCartList: () => get('/cart/list'),
   addToCart: (dishId, shopId, quantity) =>
-    post('/cart/add', { dishId, shopId, quantity }),
+    postQuery('/cart/add', { dishId, shopId, quantity }),
   updateCartQuantity: (id, quantity) =>
-    put('/cart/update', { id, quantity }),
-  deleteCartItem: (id) => del('/cart/delete', { id }),
+    putQuery('/cart/update', { id, quantity }),
+  deleteCartItem: (id) => delQuery('/cart/delete', { id }),
   clearCart: () => del('/cart/clear'),
 
   // ========== 订单 ==========
   createOrder: (addressId, remark) =>
     post('/api/orders', { addressId, remark }),
   getOrderList: (status) =>
-    get('/api/orders', { status }),
+    status !== null && status !== undefined
+      ? get('/api/orders', { status })
+      : get('/api/orders'),
   getOrderDetail: (id) =>
     get(`/api/orders/${id}`),
   cancelOrder: (id) =>
     put(`/api/orders/${id}/cancel`),
   updateOrderStatus: (id, status) =>
-    put(`/api/orders/${id}/status`, { status }),
+    putQuery(`/api/orders/${id}/status`, { status }),
 
   // ========== 地址 ==========
   getAddressList: () => get('/address/list'),
@@ -53,11 +55,11 @@ module.exports = {
   deleteAddress: (id) => del(`/address/${id}`),
   setDefaultAddress: (id) => put(`/address/default/${id}`),
 
-  // ========== 评价 ==========
+  // ========== 评价（后端使用 @RequestParam） ==========
   addReview: (dishId, orderId, content, rating) =>
-    post('/review/add', { dishId, orderId, content, rating }),
+    postQuery('/review/add', { dishId, orderId, content, rating }),
   deleteReview: (reviewId) =>
-    del('/review/delete', { reviewId }),
+    delQuery('/review/delete', { reviewId }),
   getDishReviews: (dishId) =>
     get('/review/dish', { dishId }),
   getMyReviews: () => get('/review/my'),

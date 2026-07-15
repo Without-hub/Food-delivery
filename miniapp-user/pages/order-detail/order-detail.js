@@ -1,5 +1,6 @@
 const api = require('../../utils/api');
-const { showLoading, hideLoading, formatPrice, formatTime, getOrderStatusText, getOrderStatusClass } = require('../../utils/util');
+const util = require('../../utils/util');
+const { showLoading, hideLoading, formatPrice, formatTime, getOrderStatusText, getOrderStatusClass, imgUrl } = util;
 
 Page({
   data: { order: null, reviewContent: '', reviewRating: 5, showReviewModal: false },
@@ -41,5 +42,5 @@ Page({
 
   goTracking() { wx.navigateTo({ url: `/pages/tracking/tracking?orderId=${this.orderId}` }); },
 
-  formatPrice, formatTime, getOrderStatusText, getOrderStatusClass
+  imgUrl, formatPrice, formatTime, getOrderStatusText, getOrderStatusClass
 });

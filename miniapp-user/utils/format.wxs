@@ -1,0 +1,35 @@
+// WXS 格式化模块
+var SERVER = 'https://without.net.cn';
+
+// 图片URL
+function imgUrl(path) {
+  if (!path) return '/images/tab-home-active.png';
+  if (path.indexOf('http') === 0) return path;
+  if (path.indexOf('/') === 0) return SERVER + path;
+  return SERVER + '/images/' + path;
+}
+
+// 价格格式化（保留两位小数）
+function price(val) {
+  if (val === null || val === undefined) return '0.00';
+  return val.toFixed(2);
+}
+
+// 订单状态文本
+function orderStatus(status) {
+  var map = ['待支付', '已支付', '配送中', '已完成', '已取消'];
+  return map[status] || '未知';
+}
+
+// 订单状态样式
+function orderStatusClass(status) {
+  var map = ['tag-warning', 'tag-primary', 'tag-primary', 'tag-success', 'tag-default'];
+  return map[status] || 'tag-default';
+}
+
+module.exports = {
+  imgUrl: imgUrl,
+  price: price,
+  orderStatus: orderStatus,
+  orderStatusClass: orderStatusClass
+};

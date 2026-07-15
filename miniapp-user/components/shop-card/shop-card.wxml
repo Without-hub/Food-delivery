@@ -1,5 +1,5 @@
-<view class="shop-card" bindtap="onTap">
-  <image class="shop-logo" src="../../images/tab-home-active.png"></image>
+<wxs src="../../utils/img.wxs" module="img" /><view class="shop-card" bindtap="onTap">
+  <image class="shop-logo" src="{{img.url(shop.logo)}}"></image>
   <view class="shop-info">
     <view class="shop-name">{{shop.name}}</view>
     <view class="shop-meta">

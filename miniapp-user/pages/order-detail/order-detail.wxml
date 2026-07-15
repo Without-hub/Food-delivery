@@ -1,4 +1,4 @@
-<scroll-view class="page" scroll-y wx:if="{{order}}">
+<wxs src="../../utils/img.wxs" module="img" /><wxs src="../../utils/format.wxs" module="fmt" /><scroll-view class="page" scroll-y wx:if="{{order}}">
   <!-- 状态 -->
   <view class="status-bar {{getOrderStatusClass(order.status)}}">
     <text class="status-text">{{getOrderStatusText(order.status)}}</text>
@@ -12,18 +12,18 @@
   <!-- 菜品 -->
   <view class="card">
     <view class="order-item" wx:for="{{order.items}}" wx:key="dishId">
-      <image class="oi-img" src="../../images/tab-home-active.png"></image>
+      <image class="oi-img" src="{{img.url(item.dishImage || item.image)}}"></image>
       <text class="oi-name">{{item.dishName}}</text>
       <text class="oi-qty">×{{item.quantity}}</text>
-      <text class="oi-price">¥{{formatPrice(item.subtotal)}}</text>
+      <text class="oi-price">¥{{fmt.price(item.subtotal)}}</text>
     </view>
   </view>
 
   <!-- 价格明细 -->
   <view class="card">
-    <view class="price-row"><text>商品金额</text><text>¥{{formatPrice(order.totalPrice - order.deliveryFee)}}</text></view>
-    <view class="price-row"><text>配送费</text><text>¥{{formatPrice(order.deliveryFee)}}</text></view>
-    <view class="price-row total"><text>实付金额</text><text>¥{{formatPrice(order.totalPrice)}}</text></view>
+    <view class="price-row"><text>商品金额</text><text>¥{{fmt.price(order.totalPrice - order.deliveryFee)}}</text></view>
+    <view class="price-row"><text>配送费</text><text>¥{{fmt.price(order.deliveryFee)}}</text></view>
+    <view class="price-row total"><text>实付金额</text><text>¥{{fmt.price(order.totalPrice)}}</text></view>
   </view>
 
   <!-- 操作按钮 -->

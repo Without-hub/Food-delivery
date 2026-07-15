@@ -51,11 +51,17 @@ export default function DishFormPage() {
   const handleSubmit = async (values: any) => {
     setSubmitting(true);
     try {
+      // 处理图片上传组件返回的对象 → 转为字符串URL
+      const submitData = { ...values };
+      if (submitData.image && Array.isArray(submitData.image)) {
+        const fileList = submitData.image;
+        submitData.image = fileList.length > 0 ? fileList[0].url || fileList[0].name || '' : '';
+      }
       if (isEdit) {
-        await updateDish(Number(id), values);
+        await updateDish(Number(id), submitData);
         message.success('更新成功');
       } else {
-        await createDish(values);
+        await createDish(submitData);
         message.success('创建成功');
       }
       navigate('/dishes');

@@ -30,14 +30,33 @@ function formatTime(dateStr) {
   return `${y}-${m}-${day} ${h}:${min}`;
 }
 
-// 显示加载中
+// 显示加载中（带计数器，确保配对）
+let loadingCount = 0;
 function showLoading(title = '加载中...') {
-  wx.showLoading({ title, mask: true });
+  loadingCount++;
+  if (loadingCount === 1) {
+    wx.showLoading({ title, mask: true });
+  }
 }
 
 // 隐藏加载
 function hideLoading() {
-  wx.hideLoading();
+  if (loadingCount > 0) {
+    loadingCount--;
+  }
+  if (loadingCount === 0) {
+    wx.hideLoading();
+  }
+}
+
+// 将图片路径转为完整 URL（优先使用项目本地图片，加载更快）
+function imgUrl(path) {
+  if (!path) return '/images/tab-home-active.png';
+  if (path.startsWith('http')) return path;
+  if (path.startsWith('/')) {
+    return 'https://without.net.cn' + path;
+  }
+  return 'https://without.net.cn/images/' + path;
 }
 
 // 防抖
@@ -56,5 +75,6 @@ module.exports = {
   formatTime,
   showLoading,
   hideLoading,
+  imgUrl,
   debounce
 };

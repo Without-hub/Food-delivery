@@ -1,0 +1,28 @@
+# ============================================================
+# 外卖点餐系统 — 管理后台部署指南
+# ============================================================
+
+# 在本地电脑 CMD 中执行（先上传 admin-dist 到服务器）
+# 注意：先把 deploy\admin-dist 上传到 /tmp/ 目录
+scp -r "D:\桌面\软工2417班-241451081731-魏子皓\01-外卖点餐系统-魏子皓\deploy\admin-dist" ubuntu@43.128.19.11:/tmp/
+
+# 在 SSH 中执行以下命令
+ssh ubuntu@43.128.19.11
+
+# 1. 移动管理端文件
+sudo mkdir -p /var/www/admin
+sudo cp -r /tmp/admin-dist/* /var/www/admin/
+sudo chown -R www-data:www-data /var/www/admin 2>/dev/null || true
+
+# 2. 更新 Nginx 配置（已包含 /admin/ 路径）
+sudo cp /home/ubuntu/deploy/nginx.conf /etc/nginx/conf.d/food-delivery.conf
+sudo sed -i 's|/etc/letsencrypt/live/without.net.cn/fullchain.pem|/etc/nginx/ssl/without.net.cn.pem|' /etc/nginx/conf.d/food-delivery.conf
+sudo sed -i 's|/etc/letsencrypt/live/without.net.cn/privkey.pem|/etc/nginx/ssl/without.net.cn.key|' /etc/nginx/conf.d/food-delivery.conf
+
+# 3. 重载 Nginx
+sudo nginx -t && sudo systemctl reload nginx
+
+# 4. 访问
+echo "管理后台: https://without.net.cn/admin/"
+echo "登录账号: admin"
+echo "登录密码: admin123"

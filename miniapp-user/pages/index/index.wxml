@@ -1,4 +1,4 @@
-<scroll-view class="page" scroll-y bindscrolltolower="onReachBottom">
+<wxs src="../../utils/img.wxs" module="img" /><scroll-view class="page" scroll-y bindscrolltolower="onReachBottom">
   <!-- 搜索栏 -->
   <view class="search-bar">
     <input class="search-input" placeholder="搜索商家或菜品" bindinput="onSearchInput" value="{{keyword}}"/>
@@ -32,7 +32,7 @@
 </scroll-view>
 
 <!-- 浮动购物车 -->
-<view class="cart-float" bindtap="goCart" wx:if="{{cartCount>0}}">
-  <text class="cart-badge">{{cartCount}}</text>
+<view class="cart-float" bindtap="goCart">
+  <text class="cart-badge" wx:if="{{cartCount>0}}">{{cartCount}}</text>
   <text class="cart-icon">🛒</text>
 </view>

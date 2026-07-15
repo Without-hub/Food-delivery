@@ -1,7 +1,9 @@
 // 网络请求封装
 const app = getApp();
 
-const BASE_URL = 'http://localhost:8080';
+// ===== 服务器地址配置 =====
+// 使用域名，通过 Nginx 反向代理到后端 8080 端口
+const BASE_URL = 'https://without.net.cn';
 
 function request(method, url, data, options = {}) {
   return new Promise((resolve, reject) => {
@@ -61,9 +63,21 @@ function request(method, url, data, options = {}) {
   });
 }
 
+// 将对象转为 URL 查询字符串
+function toQueryString(params) {
+  if (!params) return '';
+  return '?' + Object.keys(params)
+    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+    .join('&');
+}
+
 module.exports = {
   get: (url, data, options) => request('GET', url, data, options),
   post: (url, data, options) => request('POST', url, data, options),
   put: (url, data, options) => request('PUT', url, data, options),
   del: (url, data, options) => request('DELETE', url, data, options),
+  // 以下方法将数据作为 URL 查询参数发送（适用于后端 @RequestParam）
+  postQuery: (url, data, options) => request('POST', url + toQueryString(data), null, options),
+  putQuery: (url, data, options) => request('PUT', url + toQueryString(data), null, options),
+  delQuery: (url, data, options) => request('DELETE', url + toQueryString(data), null, options),
 };

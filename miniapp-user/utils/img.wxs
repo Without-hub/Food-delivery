@@ -1,0 +1,16 @@
+// WXS 模块：图片URL处理
+// 在 WXML 中引用：<wxs module="img">var img = require('./img.wxs');</wxs>
+var SERVER = 'https://without.net.cn';
+
+function url(path) {
+  if (!path) return '/images/tab-home-active.png';
+  if (path.indexOf('http') === 0) return path;
+  if (path.indexOf('/') === 0) {
+    return SERVER + path;
+  }
+  return SERVER + '/images/' + path;
+}
+
+module.exports = {
+  url: url
+};

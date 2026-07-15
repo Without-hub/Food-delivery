@@ -1,4 +1,4 @@
-<scroll-view class="page" scroll-y>
+<wxs src="../../utils/format.wxs" module="fmt" /><scroll-view class="page" scroll-y>
   <!-- 收货地址 -->
   <view class="card address-card" bindtap="addAddress" wx:if="{{!selectedAddr}}">
     <text style="color:#999">请添加收货地址</text>
@@ -23,7 +23,7 @@
     <view class="order-item" wx:for="{{cartItems}}" wx:key="id">
       <text class="oi-name">{{item.dishName}}</text>
       <text class="oi-qty">×{{item.quantity}}</text>
-      <text class="oi-price">¥{{formatPrice(item.subtotal || item.price*item.quantity)}}</text>
+      <text class="oi-price">¥{{fmt.price(item.subtotal || item.price*item.quantity)}}</text>
     </view>
   </view>
 
@@ -34,12 +34,12 @@
 
   <!-- 价格明细 -->
   <view class="card">
-    <view class="price-row"><text>商品金额</text><text>¥{{formatPrice(totalPrice)}}</text></view>
-    <view class="price-row"><text>配送费</text><text>¥{{formatPrice(deliveryFee)}}</text></view>
-    <view class="price-row total"><text>实付金额</text><text>¥{{formatPrice(totalPrice + deliveryFee)}}</text></view>
+    <view class="price-row"><text>商品金额</text><text>¥{{fmt.price(totalPrice)}}</text></view>
+    <view class="price-row"><text>配送费</text><text>¥{{fmt.price(deliveryFee)}}</text></view>
+    <view class="price-row total"><text>实付金额</text><text>¥{{fmt.price(totalPrice + deliveryFee)}}</text></view>
   </view>
 </scroll-view>
 <view class="submit-bar">
-  <text class="submit-total">实付：<text style="color:#ff6b35;font-size:36rpx">¥{{formatPrice(totalPrice + deliveryFee)}}</text></text>
+  <text class="submit-total">实付：<text style="color:#ff6b35;font-size:36rpx">¥{{fmt.price(totalPrice + deliveryFee)}}</text></text>
   <view class="submit-btn" bindtap="submitOrder" loading="{{submitting}}" disabled="{{submitting}}">提交订单</view>
 </view>

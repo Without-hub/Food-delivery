@@ -1,5 +1,7 @@
 const api = require('../../utils/api');
-const { showLoading, hideLoading, formatPrice } = require('../../utils/util');
+const util = require('../../utils/util');
+const { showLoading, hideLoading, formatPrice } = util;
+const imgUrl = util.imgUrl;
 
 Page({
   data: {
@@ -25,7 +27,8 @@ Page({
         api.getShopDetail(this.shopId),
         api.getDishCategory(this.shopId)
       ]);
-      this.setData({ shop, categories, activeCategoryId: categories.length > 0 ? categories[0].id : null });
+      const shopData = shop;
+      this.setData({ shop: shopData, categories, activeCategoryId: categories.length > 0 ? categories[0].id : null });
       if (categories.length > 0) this.loadDishes(categories[0].id);
     } catch (e) {} finally { hideLoading(); }
   },
@@ -33,8 +36,9 @@ Page({
   async loadDishes(categoryId) {
     try {
       const dishes = await api.getDishList(this.shopId, '', 1, 100);
-      const filtered = categoryId ? (dishes.list || dishes || []).filter(d => d.categoryId === categoryId) : (dishes.list || dishes || []);
-      this.setData({ dishes: filtered || [] });
+      const list = Array.isArray(dishes) ? dishes : (dishes.list || []);
+      const filtered = categoryId ? list.filter(d => d.categoryId === categoryId) : list;
+      this.setData({ dishes: filtered });
     } catch (e) { this.setData({ dishes: [] }); }
   },
 
@@ -81,5 +85,5 @@ Page({
     wx.navigateTo({ url: '/pages/order/order' });
   },
 
-  formatPrice
+  imgUrl, formatPrice
 });

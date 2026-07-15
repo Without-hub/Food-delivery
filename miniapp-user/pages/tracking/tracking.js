@@ -29,5 +29,7 @@ Page({
 
   callRider() {
     wx.makePhoneCall({ phoneNumber: this.data.rider.phone });
-  }
+  },
+
+  formatTime
 });

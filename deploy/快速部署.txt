@@ -1,0 +1,26 @@
+# ============================================================
+# 外卖点餐系统 — 服务器部署指南（Ubuntu）
+# ============================================================
+
+# 1. 把 deploy/ 文件夹传到服务器
+#    在本地 PowerShell/Terminal 中执行：
+scp -r D:\桌面\软工2417班-241451081731-魏子皓\01-外卖点餐系统-魏子皓\deploy ubuntu@43.128.19.11:/home/ubuntu/
+
+# 2. SSH 登录到服务器
+ssh ubuntu@43.128.19.11
+
+# 3. 执行部署脚本
+cd /home/ubuntu/deploy
+chmod +x deploy.sh
+sudo ./deploy.sh
+
+# 脚本会自动完成：
+#   - 安装 Java 17、Maven、MySQL、Nginx
+#   - 创建 food_delivery 数据库 + food_user 用户
+#   - 导入表结构和测试数据
+#   - 编译后端 → 生成 JAR → 注册 systemd 服务 → 启动
+#   - 配置 Nginx 反向代理(without.net.cn → localhost:8080)
+
+# 4. 部署完成后检查
+sudo systemctl status food-delivery
+journalctl -u food-delivery -n 20 --no-pager

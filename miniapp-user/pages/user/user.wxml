@@ -10,8 +10,8 @@
   <view class="user-header" wx:else>
     <view class="avatar">👤</view>
     <view class="user-meta">
-      <text class="user-name">{{userInfo?.nickname || userInfo?.username || '用户'}}</text>
-      <text class="user-phone">{{userInfo?.phone || ''}}</text>
+      <text class="user-name">{{userInfo && userInfo.nickname || userInfo && userInfo.username || '用户'}}</text>
+      <text class="user-phone">{{userInfo && userInfo.phone || ''}}</text>
     </view>
   </view>
 

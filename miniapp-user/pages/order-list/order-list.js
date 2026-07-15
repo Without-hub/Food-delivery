@@ -1,5 +1,6 @@
 const api = require('../../utils/api');
-const { showLoading, hideLoading, formatPrice, formatTime, getOrderStatusText, getOrderStatusClass } = require('../../utils/util');
+const util = require('../../utils/util');
+const { showLoading, hideLoading, formatPrice, formatTime, getOrderStatusText, getOrderStatusClass, imgUrl } = util;
 
 Page({
   data: { tabs: ['全部', '待支付', '已支付', '配送中', '已完成', '已取消'], activeTab: 0, orders: [] },
@@ -8,12 +9,19 @@ Page({
   onShow() { this.loadOrders(); },
 
   async loadOrders() {
+    const app = getApp();
+    if (!app.checkLogin()) { return; }
     showLoading();
     try {
       const statusMap = [null, 0, 1, 2, 3, 4];
       const status = statusMap[this.data.activeTab];
       const orders = await api.getOrderList(status);
-      this.setData({ orders: orders || [] });
+      // 预处理：给每个订单加上 displayItems（安全切片）
+      const processed = (orders || []).map(o => ({
+        ...o,
+        displayItems: (o.items || []).slice(0, 4)
+      }));
+      this.setData({ orders: processed });
     } catch (e) {} finally { hideLoading(); }
   },
 
@@ -40,5 +48,5 @@ Page({
 
   goTracking(e) { wx.navigateTo({ url: `/pages/tracking/tracking?orderId=${e.currentTarget.dataset.id}` }); },
 
-  formatPrice, formatTime, getOrderStatusText, getOrderStatusClass
+  imgUrl, formatPrice, formatTime, getOrderStatusText, getOrderStatusClass
 });

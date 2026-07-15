@@ -1,9 +1,9 @@
 const api = require('../../utils/api');
-const { showLoading, hideLoading } = require('../../utils/util');
+const { showLoading, hideLoading, imgUrl } = require('../../utils/util');
 
 Page({
   data: {
-    banners: ['../../images/tab-home-active.png', '../../images/tab-order-active.png', '../../images/tab-cart-active.png'],
+    banners: ['https://without.net.cn/images/food1.jpg', 'https://without.net.cn/images/food6.jpg', 'https://without.net.cn/images/food12.jpg'],
     categories: [],
     shops: [],
     keyword: '',
@@ -23,19 +23,14 @@ Page({
   },
 
   async loadCategories() {
-    try {
-      const cats = await api.getDishCategory(0);
-      // 固定8个分类
-      const defaultCats = [
-        { id: null, name: '全部', icon: '🔥' },
-        { id: 1, name: '汉堡' }, { id: 2, name: '茶饮' }, { id: 3, name: '炸鸡' },
-        { id: 4, name: '快餐' }, { id: 5, name: '小吃' }, { id: 6, name: '日料' },
-        { id: 7, name: '中餐' }, { id: 8, name: '甜品' }
-      ];
-      this.setData({ categories: defaultCats });
-    } catch (e) {
-      this.setData({ categories: [] });
-    }
+    // 固定8个分类（菜品分类是每个商家独立的，首页用固定分类筛选商家）
+    const defaultCats = [
+      { id: null, name: '全部', icon: '🔥' },
+      { id: 1, name: '汉堡' }, { id: 2, name: '茶饮' }, { id: 3, name: '炸鸡' },
+      { id: 4, name: '快餐' }, { id: 5, name: '小吃' }, { id: 6, name: '日料' },
+      { id: 7, name: '中餐' }, { id: 8, name: '甜品' }
+    ];
+    this.setData({ categories: defaultCats });
   },
 
   async loadShops(refresh = false) {

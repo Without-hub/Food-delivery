@@ -1,4 +1,4 @@
-<view class="page">
+<wxs src="../../utils/img.wxs" module="img" /><wxs src="../../utils/format.wxs" module="fmt" /><view class="page">
   <!-- 状态 Tab -->
   <scroll-view scroll-x class="tabs">
     <view class="tab-item {{activeTab===index?'active':''}}" wx:for="{{tabs}}" wx:key="*this" data-index="{{index}}" bindtap="onTabTap">{{item}}</view>
@@ -12,12 +12,12 @@
     </view>
     <view class="order-body">
       <view class="order-items">
-        <image wx:for="{{item.items?.slice(0,4)}}" wx:key="dishId" class="order-img" src="../../images/tab-home-active.png"></image>
+        <image wx:for="{{item.displayItems}}" wx:key="dishId" class="order-img" src="{{img.url(item.dishImage || item.image)}}"></image>
       </view>
     </view>
     <view class="order-footer">
       <text class="order-time">{{formatTime(item.createTime)}}</text>
-      <text class="order-total">¥{{formatPrice(item.totalPrice)}}</text>
+      <text class="order-total">¥{{fmt.price(item.totalPrice)}}</text>
     </view>
     <view class="order-actions" wx:if="{{item.status===0}}">
       <view class="action-btn cancel" bindtap="cancelOrder" data-id="{{item.id}}">取消订单</view>

@@ -35,6 +35,7 @@
 .popup-item { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; }
 .popup-name { flex: 1; font-size: 26rpx; }
 .popup-price { font-size: 26rpx; color: #ff6b35; margin-right: 20rpx; }
-.qty-control { display: flex; align-items: center; gap: 12rpx; }
-.qty-btn { width: 44rpx; height: 44rpx; line-height: 44rpx; text-align: center; background: #f5f5f5; border-radius: 50%; font-size: 28rpx; }
-.qty-num { font-size: 28rpx; min-width: 40rpx; text-align: center; }
+.qty-control { display: flex; align-items: center; gap: 12rpx; border: 2rpx solid #ff6b35; border-radius: 28rpx; padding: 2rpx; }
+.qty-btn { width: 44rpx; height: 44rpx; line-height: 44rpx; text-align: center; background: #ff6b35; color: #fff; border-radius: 50%; font-size: 32rpx; font-weight: bold; }
+.qty-btn.minus { background: #fff; color: #ff6b35; border: 1rpx solid #ff6b35; }
+.qty-num { font-size: 28rpx; min-width: 50rpx; text-align: center; font-weight: bold; color: #333; }

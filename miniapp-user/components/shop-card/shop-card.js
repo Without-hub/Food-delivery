@@ -1,3 +1,5 @@
+const { imgUrl } = require('../../utils/util');
+
 Component({
   properties: {
     shop: { type: Object, value: {} }
@@ -5,6 +7,7 @@ Component({
   methods: {
     onTap() {
       this.triggerEvent('tap', { id: this.data.shop.id });
-    }
+    },
+    imgUrl
   }
 });

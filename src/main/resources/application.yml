@@ -3,9 +3,8 @@ server:
 
 spring:
   profiles:
-    active: dev  # 默认使用 dev 环境；生产环境请改为 prod
+    active: prod  # 生产环境使用 prod 配置
 
 jwt:
-  # 生产环境请通过 JWT_SECRET 环境变量覆盖
   secret: food**************************
-  expiration: 86400000  # 24小时（毫秒）
+  expiration: 86400000

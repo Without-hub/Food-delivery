@@ -19,5 +19,6 @@ Page({
       wx.showToast({ title: '注册成功', icon: 'success' });
       setTimeout(() => wx.navigateBack(), 1000);
     } catch (e) {} finally { this.setData({ loading: false }); }
-  }
+  },
+  goBack() { wx.navigateBack(); }
 });
